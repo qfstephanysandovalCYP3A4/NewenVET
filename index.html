@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>newenVET — One Health Pharmacology</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* ── Newen Vet — Pastel Menta + Lavanda ── */
+  --menta:#6BBFAA;        /* menta pastel oscuro — texto/borde */
+  --menta2:#A8DDD1;       /* menta pastel medio */
+  --menta-bg:#E8F8F4;     /* menta muy suave — fondos */
+  --menta-borde:#C2EDE5;  /* borde menta */
+  --lavanda:#9B7FD4;      /* lavanda pastel oscuro — texto/borde */
+  --lavanda2:#B9A3E3;     /* lavanda pastel medio */
+  --lavanda-bg:#F0EBF9;   /* lavanda muy suave — fondos */
+  --lavanda-borde:#D4C5F0;/* borde lavanda */
+
+  /* cabecera y drawer — pastel no oscuro */
+  --header-bg1:#7B6EC4;   /* lavanda pastel header start */
+  --header-bg2:#5DADA0;   /* menta pastel header end */
+
+  /* categorías — tonos pastel consistentes */
+  --azul:#5B8ED6;--azul-bg:#EBF3FC;
+  --morado:#8B5DB5;--morado-bg:#F3EBF9;
+  --naranja:#D4845A;--naranja-bg:#FDEEE6;
+  --teal:#4FA898;--teal-bg:#E5F5F3;
+  --rosa:#C4607A;--rosa-bg:#FCEDF1;
+  --cafe:#8D7060;--cafe-bg:#F5EFEB;
+  --cyan:#4A9FAA;--cyan-bg:#E5F5F7;
+  --rojo:#C26060;--rojo-bg:#FCEAEA;
+
+  --gris:#6B7C8A;
+  --fondo:#F5FAF8;
+  --borde:#C2EDE5;
+  --verde:#6BBFAA;--verde2:#A8DDD1;--verde-bg:#E8F8F4;
+  --amarillo:#D4A84B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--fondo);color:#263238;min-height:100vh;padding-bottom:env(safe-area-inset-bottom,0px)}
+
+/* ── HEADER ── */
+header{background:linear-gradient(135deg,#7B6EC4 0%,#9B7FD4 50%,#5DADA0 100%);padding:20px 20px 14px;position:sticky;top:0;z-index:100;box-shadow:0 3px 12px rgba(100,80,180,.2);padding-top:calc(20px + env(safe-area-inset-top,0px))}
+.logo-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.logo-icon{font-size:2.2rem;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3))}
+header h1{font-family:'Nunito',sans-serif;font-size:1.6rem;font-weight:900;color:#fff;line-height:1.1;letter-spacing:-.5px}
+header h1 span{font-size:.82rem;font-weight:600;opacity:.85;display:block;letter-spacing:.5px}
+.search-bar{display:flex;align-items:center;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.4);border-radius:12px;padding:8px 14px;gap:8px}
+.search-bar input{background:transparent;border:none;color:#fff;font-size:.95rem;width:100%;outline:none;font-family:'DM Sans',sans-serif}
+.search-bar input::placeholder{color:rgba(255,255,255,.65)}
+
+/* ── HAMBURGER (solo mobile) ── */
+.ham-btn{display:none;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.35);border-radius:10px;width:40px;height:40px;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px;flex-shrink:0;transition:background .18s}
+.ham-btn:hover{background:rgba(255,255,255,.25)}
+.ham-line{width:18px;height:2px;background:#fff;border-radius:2px;transition:all .25s}
+.ham-btn.open .ham-line:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.ham-btn.open .ham-line:nth-child(2){opacity:0}
+.ham-btn.open .ham-line:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ── LAYOUT PRINCIPAL ── */
+.app-shell{display:flex;min-height:calc(100vh - 90px)}
+
+/* ── SIDEBAR ── */
+.sidebar{width:210px;flex-shrink:0;background:#fff;border-right:1.5px solid var(--borde);display:flex;flex-direction:column;position:sticky;top:90px;height:calc(100vh - 90px);overflow-y:auto}
+.sidebar-body{flex:1;padding:10px 0}
+.sidebar-section{padding:10px 16px 4px;font-size:.65rem;font-weight:700;color:var(--lavanda2);letter-spacing:1.2px;text-transform:uppercase}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;border:none;background:transparent;width:100%;text-align:left;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;color:#455A64;transition:background .15s;position:relative}
+.sidebar-item:hover{background:var(--menta-bg)}
+.sidebar-item.active{background:var(--lavanda-bg);color:var(--lavanda)}
+.sidebar-item.active::before{content:'';position:absolute;left:0;top:15%;bottom:15%;width:3px;background:var(--lavanda);border-radius:0 3px 3px 0}
+.sidebar-item .si-emoji{font-size:1.1rem;width:24px;text-align:center}
+.sidebar-divider{height:1px;background:var(--borde);margin:6px 14px}
+.sidebar-footer{padding:12px 14px;border-top:1px solid var(--borde);font-size:.68rem;color:var(--gris);line-height:1.5}
+
+/* ── CONTENIDO ── */
+.main-content{flex:1;min-width:0;overflow-x:hidden}
+
+/* ── MOBILE OVERLAY ── */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(60,40,120,.35);z-index:300;backdrop-filter:blur(2px)}
+.sidebar-overlay.open{display:block}
+
+/* ── MOBILE: sidebar desliza desde izquierda ── */
+@media(max-width:700px){
+  .ham-btn{display:flex}
+  .sidebar{position:fixed;top:0;left:-220px;height:100%;z-index:400;transition:left .28s cubic-bezier(.4,0,.2,1);padding-top:env(safe-area-inset-top,0px)}
+  .sidebar.open{left:0}
+  .app-shell{display:block}
+  .main-content{width:100%}
+}
+
+/* ── PANEL FÁRMACOS ── */
+.tabs-wrap{background:#fff;border-bottom:2px solid var(--borde);overflow-x:auto;scrollbar-width:none}
+.tabs-wrap::-webkit-scrollbar{display:none}
+.tabs{display:flex;gap:4px;padding:10px 16px;min-width:max-content}
+.tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 14px;border-radius:10px;cursor:pointer;border:2px solid transparent;background:var(--fondo);transition:all .18s;min-width:64px}
+.tab .t-emoji{font-size:1.5rem}
+.tab .t-label{font-size:.72rem;font-weight:600;color:var(--gris);white-space:nowrap}
+.tab.active{background:var(--lavanda-bg);border-color:var(--lavanda)}
+.tab.active .t-label{color:var(--lavanda)}
+
+.cat-filter{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;scrollbar-width:none}
+.cat-filter::-webkit-scrollbar{display:none}
+.cat-btn{display:flex;align-items:center;gap:5px;padding:6px 13px;border-radius:20px;font-size:.8rem;font-weight:600;cursor:pointer;border:2px solid #CFD8DC;white-space:nowrap;transition:all .18s;background:#fff;color:var(--gris)}
+.cat-btn[data-cat="todos"].active{background:var(--lavanda);color:#fff;border-color:var(--lavanda)}
+.cat-btn[data-cat="antimicrobianos"].active{background:#5B8ED6;color:#fff;border-color:#5B8ED6}
+.cat-btn[data-cat="antiparasitarios"].active{background:#8B5DB5;color:#fff;border-color:#8B5DB5}
+.cat-btn[data-cat="aines"].active{background:#D4845A;color:#fff;border-color:#D4845A}
+.cat-btn[data-cat="anestesia"].active{background:#4FA898;color:#fff;border-color:#4FA898}
+.cat-btn[data-cat="reproductivos"].active{background:#C4607A;color:#fff;border-color:#C4607A}
+.cat-btn[data-cat="gastrointestinal"].active{background:#8D7060;color:#fff;border-color:#8D7060}
+.cat-btn[data-cat="cardiovascular"].active{background:#C26060;color:#fff;border-color:#C26060}
+.cat-btn[data-cat="neurologico"].active{background:#8B5DB5;color:#fff;border-color:#8B5DB5}
+.cat-btn[data-cat="vitaminas"].active{background:#4A9FAA;color:#fff;border-color:#4A9FAA}
+.cat-btn[data-cat="conducta"].active{background:#C4607A;color:#fff;border-color:#C4607A}
+.cat-btn[data-cat="antiemeticos"].active{background:#4A9FAA;color:#fff;border-color:#4A9FAA}
+
+/* ── CARDS ── */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px;padding:16px}
+.drug-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.08);border:1px solid #E0E0E0;cursor:pointer;transition:transform .18s,box-shadow .18s}
+.drug-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.13)}
+.card-header{padding:14px 16px 10px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.drug-name{font-family:'Nunito',sans-serif;font-size:1.15rem;font-weight:900;color:#5B3FAA;line-height:1.15}
+.drug-class{font-size:.8rem;color:var(--gris);margin-top:2px;font-weight:500}
+.cat-badge{font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap;margin-top:2px;display:inline-block;flex-shrink:0}
+.badge-antimicrobianos{background:#EBF3FC;color:#5B8ED6}
+.badge-antiparasitarios{background:#F3EBF9;color:#8B5DB5}
+.badge-aines{background:#FDEEE6;color:#D4845A}
+.badge-anestesia{background:#E5F5F3;color:#4FA898}
+.badge-reproductivos{background:#FCEDF1;color:#C4607A}
+.badge-gastrointestinal{background:#F5EFEB;color:#8D7060}
+.badge-cardiovascular{background:#FCEAEA;color:#C26060}
+.badge-neurologico{background:#F3EBF9;color:#8B5DB5}
+.badge-vitaminas{background:#E5F5F7;color:#4A9FAA}
+.badge-conducta{background:#FCEDF1;color:#C4607A}
+.badge-antiemeticos{background:#E5F5F7;color:#4A9FAA}
+
+.card-indicacion{background:var(--fondo);padding:8px 16px;font-size:.82rem;color:#455A64;border-top:1px solid var(--borde);border-bottom:1px solid var(--borde);display:flex;gap:6px;align-items:flex-start}
+.dosis-section{padding:10px 16px 12px}
+.dosis-title{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--gris);margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.dosis-rows{display:flex;flex-direction:column;gap:5px}
+.dosis-row{display:flex;align-items:stretch;border-radius:8px;overflow:hidden;border:1px solid #ECEFF1;font-size:.81rem}
+.dosis-especie{display:flex;align-items:center;gap:5px;padding:7px 10px;background:#F8F9FA;min-width:90px;font-weight:600;font-size:.8rem;color:#37474F;border-right:1px solid #ECEFF1}
+.dosis-valor{padding:7px 10px;flex:1;color:#37474F;line-height:1.4;display:flex;align-items:center}
+.card-warnings{border-top:1px solid #FFCCBC;background:#FFF8F5;padding:8px 16px;display:flex;gap:6px;align-items:flex-start}
+.warn-text{font-size:.79rem;color:#BF360C;line-height:1.45}
+.card-via{padding:8px 16px;border-top:1px solid var(--borde);display:flex;gap:8px;align-items:center;font-size:.8rem;color:var(--gris);flex-wrap:wrap}
+.via-pill{background:var(--menta-bg);border:1px solid var(--menta-borde);border-radius:20px;padding:3px 10px;font-size:.76rem;font-weight:600;color:var(--teal)}
+
+/* ── PANEL TIPS FARMACÉUTICOS ── */
+.tips-panel{padding:16px;display:none}
+
+.tips-section-title{font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;color:#9B7FD4;margin:0 0 12px;padding-bottom:6px;border-bottom:2px solid #D4C5F0;display:flex;align-items:center;gap:6px}
+
+.tip-cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-bottom:24px}
+
+.tip-card{border-radius:14px;overflow:hidden;border:1px solid #E0E0E0;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.tip-card-header{padding:12px 14px;display:flex;align-items:center;gap:10px}
+.tip-card-header .tc-emoji{font-size:1.6rem}
+.tip-card-header h3{font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;line-height:1.2}
+.tip-card-body{padding:12px 14px 14px;font-size:.84rem;line-height:1.55}
+.tip-card-body ul{list-style:none;display:flex;flex-direction:column;gap:5px;padding:0}
+.tip-card-body li{display:flex;gap:7px;align-items:flex-start}
+.tip-card-body li .li-icon{flex-shrink:0;margin-top:1px}
+
+/* Colores por tipo de tip */
+.tip-preparacion .tip-card-header{background:#E3F2FD;color:#1565C0}
+.tip-preparacion{border-color:#BBDEFB}
+.tip-almacenamiento .tip-card-header{background:#E0F2F1;color:#00695C}
+.tip-almacenamiento{border-color:#B2DFDB}
+.tip-devolucion .tip-card-header{background:#FFF3E0;color:#EF6C00}
+.tip-devolucion{border-color:#FFE0B2}
+.tip-admin .tip-card-header{background:#F3E5F5;color:#6A1B9A}
+.tip-admin{border-color:#E1BEE7}
+.tip-calculo .tip-card-header{background:#FCE4EC;color:#880E4F}
+.tip-calculo{border-color:#F8BBD0}
+.tip-seguridad .tip-card-header{background:#FFEBEE;color:#B71C1C}
+.tip-seguridad{border-color:#FFCDD2}
+.tip-resistencia .tip-card-header{background:#E8EAF6;color:#283593}
+.tip-resistencia{border-color:#C5CAE9}
+.tip-via .tip-card-header{background:#E0F7FA;color:#006064}
+.tip-via{border-color:#B2EBF2}
+
+/* ── PANEL ESPECIES ── */
+.especies-panel{padding:16px;display:none}
+.especie-cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.especie-card{background:#fff;border-radius:14px;overflow:hidden;border:1px solid #E0E0E0;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.especie-card-header{padding:16px;display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#9B7FD4,#B9A3E3);color:#fff}
+.esp-card-emoji{font-size:2.5rem}
+.esp-card-name{font-family:'Nunito',sans-serif;font-size:1.2rem;font-weight:900}
+.esp-card-latin{font-size:.78rem;opacity:.85;font-style:italic}
+.especie-card-body{padding:14px}
+.esp-fact{display:flex;gap:8px;align-items:flex-start;font-size:.83rem;color:#455A64;margin-bottom:6px;line-height:1.4}
+.esp-fact-icon{flex-shrink:0}
+.esp-tag-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.esp-tag{background:var(--lavanda-bg);border:1px solid var(--lavanda-borde);border-radius:20px;padding:3px 10px;font-size:.74rem;font-weight:600;color:var(--lavanda)}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px)}
+.modal-overlay.open{display:flex}
+.modal-sheet{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:640px;max-height:92vh;overflow-y:auto;animation:slideUp .28s ease}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-handle{width:40px;height:5px;background:#CFD8DC;border-radius:3px;margin:12px auto 0}
+.modal-header{padding:14px 20px 12px;border-bottom:1px solid #ECEFF1;position:sticky;top:0;background:#fff;z-index:10;display:flex;align-items:flex-start;justify-content:space-between}
+.modal-drug-name{font-family:'Nunito',sans-serif;font-size:1.4rem;font-weight:900;color:#5B3FAA}
+.modal-drug-class{font-size:.85rem;color:var(--gris);margin-top:2px}
+.modal-close{background:#F5F5F5;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;color:var(--gris);flex-shrink:0;margin-top:2px}
+.modal-body{padding:16px 20px 24px}
+.modal-section{margin-bottom:18px}
+.modal-section-title{font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--lavanda);display:flex;align-items:center;gap:6px;margin-bottom:8px;padding-bottom:5px;border-bottom:2px solid var(--lavanda-borde)}
+.modal-dosis-table{width:100%;border-collapse:collapse;font-size:.85rem;border-radius:10px;overflow:hidden;border:1px solid #ECEFF1}
+.modal-dosis-table th{background:#9B7FD4;color:#fff;font-weight:700;padding:8px 12px;text-align:left;font-size:.8rem}
+.modal-dosis-table td{padding:8px 12px;border-bottom:1px solid #F5F5F5;color:#37474F}
+.modal-dosis-table tr:nth-child(even) td{background:#FAFAFA}
+.modal-dosis-table tr:last-child td{border-bottom:none}
+.esp-cell{font-weight:600;white-space:nowrap}
+.mecanismo-box{background:var(--lavanda-bg);border-left:4px solid var(--lavanda);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.85rem;color:#5B3FAA;line-height:1.5}
+.alerta-box{background:#FFF3E0;border-left:4px solid var(--naranja);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.85rem;color:#E65100;line-height:1.5;display:flex;gap:8px}
+.contraindicaciones-list{list-style:none;display:flex;flex-direction:column;gap:5px}
+.contraindicaciones-list li{display:flex;gap:8px;font-size:.84rem;color:#455A64;align-items:flex-start;line-height:1.4}
+.contraindicaciones-list li::before{content:'✗';color:var(--rojo);font-weight:bold;margin-top:1px;flex-shrink:0}
+.pill-row{display:flex;flex-wrap:wrap;gap:6px}
+.pill-via{background:var(--menta-bg);color:var(--teal);border-radius:20px;padding:4px 12px;font-size:.82rem;font-weight:600}
+
+/* Tip farmacéutico dentro del modal */
+.modal-tip-box{background:linear-gradient(135deg,var(--lavanda-bg),var(--menta-bg));border:1px solid var(--menta-borde);border-radius:10px;padding:12px 14px;font-size:.83rem;color:#3D2B8C;line-height:1.55}
+.modal-tip-box .tip-title{font-weight:700;font-size:.88rem;margin-bottom:6px;color:var(--lavanda);display:flex;gap:6px;align-items:center}
+.modal-tip-box ul{list-style:none;display:flex;flex-direction:column;gap:4px;padding:0}
+.modal-tip-box li::before{content:'→ ';color:var(--menta);font-weight:700}
+
+.fuente-badge{display:inline-flex;align-items:center;gap:4px;background:#F5F5F5;border:1px solid #E0E0E0;border-radius:6px;padding:4px 10px;font-size:.75rem;color:var(--gris);margin-top:4px}
+.results-count{padding:8px 16px 0;font-size:.82rem;color:var(--gris);font-weight:500}
+.disclaimer{margin:8px 16px 20px;background:#FFF8E1;border:1px solid #FFECB3;border-radius:10px;padding:10px 14px;font-size:.78rem;color:#795548;display:flex;gap:7px;align-items:flex-start;line-height:1.45}
+.empty-state{text-align:center;padding:48px 20px;color:var(--gris);grid-column:1/-1}
+.empty-state .es-emoji{font-size:3rem;margin-bottom:12px}
+.empty-state h3{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:6px}
+
+@media(max-width:400px){.cards-grid,.tip-cards-grid,.especie-cards-grid{grid-template-columns:1fr;padding:10px;gap:12px}.drug-name{font-size:1.05rem}.modal-drug-name{font-size:1.2rem}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-row">
+    <button class="ham-btn" id="hamBtn" onclick="toggleDrawer()" aria-label="Menú">
+      <span class="ham-line"></span>
+      <span class="ham-line"></span>
+      <span class="ham-line"></span>
+    </button>
+    <svg width="52" height="52" viewBox="0 0 52 52" style="flex-shrink:0;filter:drop-shadow(0 2px 6px rgba(124,77,255,.4))">
+      <polygon points="26,4 46,15 46,37 26,48 6,37 6,15" fill="#EDE9FA" stroke="#4ECBA8" stroke-width="2"/>
+      <line x1="28" y1="14" x2="22" y2="28" stroke="#7C4DFF" stroke-width="2.8" stroke-linecap="round"/>
+      <line x1="22" y1="28" x2="27" y2="28" stroke="#7C4DFF" stroke-width="2.8" stroke-linecap="round"/>
+      <line x1="27" y1="28" x2="21" y2="42" stroke="#7C4DFF" stroke-width="2.8" stroke-linecap="round"/>
+      <circle cx="26" cy="4"  r="3" fill="#4ECBA8"/>
+      <circle cx="46" cy="15" r="3" fill="#9C8FCC"/>
+      <circle cx="46" cy="37" r="3" fill="#4ECBA8"/>
+      <circle cx="26" cy="48" r="3" fill="#9C8FCC"/>
+      <circle cx="6"  cy="37" r="3" fill="#4ECBA8"/>
+      <circle cx="6"  cy="15" r="3" fill="#9C8FCC"/>
+    </svg>
+    <div>
+      <h1 style="font-family:'Nunito',sans-serif;font-size:1.7rem;font-weight:900;color:#fff;line-height:1;letter-spacing:-0.5px">
+        newen<span style="color:#4ECBA8">VET</span>
+        <span style="font-size:.75rem;font-weight:600;opacity:.8;display:block;letter-spacing:1.5px;margin-top:2px;color:#C5B8F7">ONE HEALTH PHARMACOLOGY</span>
+      </h1>
+    </div>
+  </div>
+  <div class="search-bar">
+    <span>🔍</span>
+    <input type="text" id="searchInput" placeholder="Buscar fármaco, indicación o especie..." autocomplete="off">
+  </div>
+</header>
+
+<!-- OVERLAY MOBILE -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- APP SHELL -->
+<div class="app-shell">
+
+<!-- SIDEBAR IZQUIERDA -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-body">
+    <div class="sidebar-section">Fármacos</div>
+    <button class="sidebar-item active" data-panel="farmacos" data-cat="todos" onclick="switchPanel('farmacos',this);filterCat('todos',this)">
+      <span class="si-emoji">🐾</span>Todos
+    </button>
+    <button class="sidebar-item" data-panel="farmacos" data-cat="antimicrobianos" onclick="switchPanel('farmacos',this);filterCat('antimicrobianos',this)">
+      <span class="si-emoji">💊</span>Antimicrobianos
+    </button>
+    <button class="sidebar-item" data-panel="farmacos" data-cat="antiparasitarios" onclick="switchPanel('farmacos',this);filterCat('antiparasitarios',this)">
+      <span class="si-emoji">🦠</span>Antiparasitarios
+    </button>
+    <button class="sidebar-item" data-panel="farmacos" data-cat="aines" onclick="switchPanel('farmacos',this);filterCat('aines',this)">
+      <span class="si-emoji">🔥</span>AINEs
+    </button>
+    <button class="sidebar-item" data-panel="farmacos" data-cat="anestesia" onclick="switchPanel('farmacos',this);filterCat('anestesia',this)">
+      <span class="si-emoji">💉</span>Anestesia
+    </button>
+    <button class="sidebar-item" data-panel="farmacos" data-cat="reproductivos" onclick="switchPanel('farmacos',this);filterCat('reproductivos',this)">
+      <span class="si-emoji">🐣</span>Reproductivos
+    </button>
+    <button class="sidebar-item" data-panel="farmacos" data-cat="gastrointestinal" onclick="switchPanel('farmacos',this);filterCat('gastrointestinal',this)">
+      <span class="si-emoji">🫀</span>Gastrointestinal
+    </button>
+    <button class="sidebar-item" data-panel="farmacos" data-cat="cardiovascular" onclick="switchPanel('farmacos',this);filterCat('cardiovascular',this)">
+      <span class="si-emoji">❤️</span>Cardiovascular
+    </button>
+    <button class="sidebar-item" data-panel="farmacos" data-cat="neurologico" onclick="switchPanel('farmacos',this);filterCat('neurologico',this)">
+      <span class="si-emoji">🧠</span>Neurológico
+    </button>
+    <button class="sidebar-item" data-panel="farmacos" data-cat="vitaminas" onclick="switchPanel('farmacos',this);filterCat('vitaminas',this)">
+      <span class="si-emoji">⭐</span>Vitaminas/Supl.
+    </button>
+    <button class="sidebar-item" data-panel="farmacos" data-cat="conducta" onclick="switchPanel('farmacos',this);filterCat('conducta',this)">
+      <span class="si-emoji">🧡</span>Conducta/Ansiedad
+    </button>
+    <button class="sidebar-item" data-panel="antiemeticos" data-cat="antiemeticos" onclick="switchPanel('antiemeticos',this)">
+      <span class="si-emoji">🤢</span>Antieméticos
+    </button>
+
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">Referencia</div>
+    <button class="sidebar-item" data-panel="viral" onclick="switchPanel('viral',this)">
+      <span class="si-emoji">🦠</span>Virales
+    </button>
+    <button class="sidebar-item" data-panel="especies" onclick="switchPanel('especies',this)">
+      <span class="si-emoji">🐾</span>Especies
+    </button>
+
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">Recursos</div>
+    <button class="sidebar-item" data-panel="tips" onclick="switchPanel('tips',this)">
+      <span class="si-emoji">💡</span>Tips Farm.
+    </button>
+  </div>
+  <div class="sidebar-footer">
+    ⚕️ Solo uso didáctico<br>
+    📚 Plumb's VDH 10ª ed.
+  </div>
+</nav>
+
+<!-- CONTENIDO PRINCIPAL -->
+<div class="main-content">
+
+<!-- ═══════════════════ PANEL FÁRMACOS ═══════════════════ -->
+<div id="panel-farmacos">
+  <div class="tabs-wrap">
+    <div class="tabs" id="speciesTabs">
+      <div class="tab active" data-especie="todos"><span class="t-emoji">🐾</span><span class="t-label">Todos</span></div>
+      <div class="tab" data-especie="canino"><span class="t-emoji">🐕</span><span class="t-label">Canino</span></div>
+      <div class="tab" data-especie="felino"><span class="t-emoji">🐈</span><span class="t-label">Felino</span></div>
+      <div class="tab" data-especie="bovino"><span class="t-emoji">🐄</span><span class="t-label">Bovino</span></div>
+      <div class="tab" data-especie="equino"><span class="t-emoji">🐴</span><span class="t-label">Equino</span></div>
+      <div class="tab" data-especie="ovino"><span class="t-emoji">🐑</span><span class="t-label">Ovino</span></div>
+      <div class="tab" data-especie="porcino"><span class="t-emoji">🐖</span><span class="t-label">Porcino</span></div>
+      <div class="tab" data-especie="caprino"><span class="t-emoji">🐐</span><span class="t-label">Caprino</span></div>
+      <div class="tab" data-especie="ave"><span class="t-emoji">🐓</span><span class="t-label">Aves</span></div>
+      <div class="tab" data-especie="camelido"><span class="t-emoji">🦙</span><span class="t-label">Camélidos</span></div>
+    </div>
+  </div>
+  
+  <div class="disclaimer">
+    <span>⚠️</span>
+    <span><strong>Solo uso didáctico.</strong> Datos basados en Plumb's Veterinary Drug Handbook (10ª ed.) y Merck Veterinary Manual. Confirmar siempre con ficha técnica vigente y veterinario tratante.</span>
+  </div>
+  <div class="results-count" id="resultsCount"></div>
+  <div class="cards-grid" id="cardsGrid"></div>
+</div>
+
+<!-- ═══════════════════ PANEL TIPS ═══════════════════ -->
+<div id="panel-tips" class="tips-panel">
+
+  <div style="padding:0 0 0 0">
+    <div class="tips-section-title" style="margin:16px 16px 12px">💡 Tips Farmacéuticos para Campo</div>
+
+    <div class="tip-cards-grid">
+
+      <!-- SUSPENSIONES ORALES -->
+      <div class="tip-card tip-preparacion">
+        <div class="tip-card-header"><span class="tc-emoji">🧪</span><h3>Preparación de Suspensiones Orales</h3></div>
+        <div class="tip-card-body">
+          <ul>
+            <li><span class="li-icon">1️⃣</span> Agitar el frasco seco por 10–15 seg antes de agregar agua.</li>
+            <li><span class="li-icon">2️⃣</span> Agregar agua hervida fría o agua purificada, <strong>nunca agua caliente</strong> (degrada el principio activo).</li>
+            <li><span class="li-icon">3️⃣</span> Llenar solo hasta la marca indicada en el frasco. No añadir más agua para "rendir más".</li>
+            <li><span class="li-icon">4️⃣</span> Agitar vigorosamente hasta homogeneizar completamente.</li>
+            <li><span class="li-icon">5️⃣</span> Anotar fecha de reconstitución en el frasco.</li>
+            <li><span class="li-icon">📅</span> Vigencia típica post-reconstitución: 7–14 días refrigerado (verificar inserto).</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ALMACENAMIENTO CAMPO -->
+      <div class="tip-card tip-almacenamiento">
+        <div class="tip-card-header"><span class="tc-emoji">🌡️</span><h3>Almacenamiento en Condiciones de Campo</h3></div>
+        <div class="tip-card-body">
+          <ul>
+            <li><span class="li-icon">❄️</span> <strong>Cadena de frío (2–8°C):</strong> vacunas, oxitocina, algunos antibióticos inyectables. Usar cooler con ice pack, no contacto directo con hielo.</li>
+            <li><span class="li-icon">🌡️</span> <strong>Temperatura ambiente (15–25°C):</span> la mayoría de comprimidos, suspensiones reconstituidas, antiparasitarios pour-on.</li>
+            <li><span class="li-icon">☀️</span> Proteger de luz solar directa — degradan beta-lactámicos, vitaminas y suspensiones.</li>
+            <li><span class="li-icon">💧</span> Mantener en lugar seco. Humedad deteriora comprimidos y formas sólidas.</li>
+            <li><span class="li-icon">🔒</span> Fármacos controlados: caja con llave aunque sea en campo.</li>
+            <li><span class="li-icon">🚗</span> En vehículo: nunca dejar más de 1 h en interior con sol (supera 60°C).</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ANIMAL DEVUELVE LA DOSIS -->
+      <div class="tip-card tip-devolucion">
+        <div class="tip-card-header"><span class="tc-emoji">🤢</span><h3>¿El Animal Devolvió la Dosis?</h3></div>
+        <div class="tip-card-body">
+          <ul>
+            <li><span class="li-icon">⏱️</span> <strong>Si vómito/regurgitación ocurre &lt;15 min:</strong> se asume que no se absorbió nada → repetir dosis completa.</li>
+            <li><span class="li-icon">⏱️</span> <strong>Entre 15–30 min:</strong> considerar media dosis (criterio clínico — consultar veterinario).</li>
+            <li><span class="li-icon">⏱️</span> <strong>Más de 30–60 min:</strong> no repetir. Asumir absorción suficiente.</li>
+            <li><span class="li-icon">📌</span> Excepciones: comprimidos recubiertos o gastrorresistentes — pueden tardar más en liberar.</li>
+            <li><span class="li-icon">🐄</span> <strong>Rumiantes:</strong> la regurgitación es normal (rumia). El contexto importa: ¿vomitó por estrés o realmente rechazó?</li>
+            <li><span class="li-icon">✏️</span> Registrar siempre hora de administración y evento de vómito.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ADMINISTRACIÓN ORAL EN BOVINOS -->
+      <div class="tip-card tip-admin">
+        <div class="tip-card-header"><span class="tc-emoji">🐄</span><h3>Administración Oral en Grandes Animales</h3></div>
+        <div class="tip-card-body">
+          <ul>
+            <li><span class="li-icon">🍶</span> <strong>Bolos/pasta antiparasitaria equino:</strong> colocar el aplicador sobre la base de la lengua y presionar mientras el animal no pueda escupir.</li>
+            <li><span class="li-icon">💊</span> <strong>Comprimidos en bovinos:</strong> usar bolo-gun (pistola dispensadora). Insertar sobre la base de la lengua.</li>
+            <li><span class="li-icon">💧</span> <strong>Líquidos en bovinos:</strong> jeringa drencher o sonda nasogástrica. No forzar cabeza hacia arriba → riesgo de aspiración bronquial.</li>
+            <li><span class="li-icon">🐑</span> <strong>Ovinos y caprinos:</strong> pueden escupir fácilmente. Sostener el hocico cerrado 10–15 seg post-administración.</li>
+            <li><span class="li-icon">⚠️</span> <strong>Nunca</strong> mezclar antiparasitarios con agua de bebida comunal si no está indicado así.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- CÁLCULO DE DOSIS -->
+      <div class="tip-card tip-calculo">
+        <div class="tip-card-header"><span class="tc-emoji">🧮</span><h3>Cálculo de Dosis — Tips Clave</h3></div>
+        <div class="tip-card-body">
+          <ul>
+            <li><span class="li-icon">📐</span> <strong>Fórmula:</strong> Volumen a administrar = (Dosis mg/kg × Peso kg) ÷ Concentración del producto (mg/mL)</li>
+            <li><span class="li-icon">⚖️</span> Siempre pesar al animal o estimar el peso — nunca doblar la dosis "por si acaso".</li>
+            <li><span class="li-icon">🐄</span> Estimación bovino sin balanza: Peso (kg) = [Perímetro torácico (cm)]² × Largo (cm) ÷ 10.000</li>
+            <li><span class="li-icon">🐑</span> Ovino adulto promedio: 40–60 kg. Cordero: 20–30 kg.</li>
+            <li><span class="li-icon">🐖</span> Cerdo adulto: 80–120 kg. Lechón 1 mes: 5–8 kg.</li>
+            <li><span class="li-icon">💡</span> Para productos pour-on: respetar aplicación en línea dorsal. No usar si el animal está mojado.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- SEGURIDAD DEL OPERADOR -->
+      <div class="tip-card tip-seguridad">
+        <div class="tip-card-header"><span class="tc-emoji">🧤</span><h3>Seguridad del Operador</h3></div>
+        <div class="tip-card-body">
+          <ul>
+            <li><span class="li-icon">🧤</span> Guantes nitrilo siempre con: organofosforados, PGF2α, ivermectina pour-on, corticosteroides.</li>
+            <li><span class="li-icon">👁️</span> Gafas protectoras con productos en spray o aplicación a presión.</li>
+            <li><span class="li-icon">🤰</span> Embarazadas: <strong>no manipular</strong> prostaglandinas, oxitocina IV, estradiol, dexametasona.</li>
+            <li><span class="li-icon">💉</span> Pinchazo accidental: lavar con agua y jabón 10 min, notar principio activo, hora y dosis → médico.</li>
+            <li><span class="li-icon">🌊</span> Productos pour-on/antiparasitarios: no lavar animal en cursos de agua → tóxico para peces.</li>
+            <li><span class="li-icon">🗑️</span> Jeringas usadas: contenedor cortopunzante. Frascos vacíos: enjuagar 3 veces antes de desechar.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- RESISTENCIA ANTIMICROBIANA -->
+      <div class="tip-card tip-resistencia">
+        <div class="tip-card-header"><span class="tc-emoji">🦠</span><h3>Resistencia — Puntos Críticos de Campo</h3></div>
+        <div class="tip-card-body">
+          <ul>
+            <li><span class="li-icon">📋</span> Completar siempre el ciclo completo del antibiótico. Suspender ante mejoría clínica es la causa más frecuente de resistencia.</li>
+            <li><span class="li-icon">🔬</span> Idealmente cultivo y antibiograma antes de iniciar tratamiento — especialmente en animales de producción.</li>
+            <li><span class="li-icon">🚫</span> No usar antimicrobianos de importancia crítica humana (fluoroquinolonas, cefalosporinas 3ª gen) como primera línea en bovinos sin indicación clara.</li>
+            <li><span class="li-icon">🐑</span> <strong>Resistencia antihelmíntica:</strong> muy alta en Chile para bencimidazoles en ovinos/caprinos. Rotar mecanismos de acción.</li>
+            <li><span class="li-icon">📆</span> FAMACHA: herramienta práctica para Haemonchus contortus en ovinos — tratar solo los que realmente lo necesitan.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- VÍAS DE ADMINISTRACIÓN -->
+      <div class="tip-card tip-via">
+        <div class="tip-card-header"><span class="tc-emoji">💉</span><h3>Vías de Administración — Diferencias Clave</h3></div>
+        <div class="tip-card-body">
+          <ul>
+            <li><span class="li-icon">⚡</span> <strong>IV:</strong> efecto inmediato, riesgo de reacción si se administra rápido. Solo soluciones claras y compatibles.</li>
+            <li><span class="li-icon">🏃</span> <strong>IM:</strong> absorción en 15–30 min. Máx 10–20 mL por sitio en bovinos. Evitar cuello (afecta calidad canal).</li>
+            <li><span class="li-icon">🐢</span> <strong>SC:</strong> absorción más lenta. Buen volumen de depósito. Levantar "carpa" de piel.</li>
+            <li><span class="li-icon">🌿</span> <strong>Pour-on:</strong> solo en dorso, piel seca e íntegra. No usar en días de lluvia ni con parasitosis de piel activa.</li>
+            <li><span class="li-icon">🐄</span> <strong>Intramamaria:</strong> ordeñar completamente antes. Desinfectar pezón. Masajear cuarto mamario tras aplicar.</li>
+            <li><span class="li-icon">🌡️</span> No inyectar productos fríos de refrigerador directamente — atemperar a temperatura corporal.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div><!-- fin tip-cards-grid -->
+
+    <!-- TABLA PERIODOS DE RETIRO -->
+    <div style="padding:0 16px 24px">
+      <div class="tips-section-title">⏰ Períodos de Retiro Orientativos (verificar por producto)</div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:.83rem;border-radius:12px;overflow:hidden;border:1px solid #C8E6C9">
+          <thead>
+            <tr style="background:var(--verde);color:#fff">
+              <th style="padding:9px 12px;text-align:left">Fármaco</th>
+              <th style="padding:9px 12px;text-align:center">Carne (días)</th>
+              <th style="padding:9px 12px;text-align:center">Leche (días)</th>
+              <th style="padding:9px 12px;text-align:center">Huevo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:#FAFAFA"><td style="padding:8px 12px;font-weight:600">Penicilina G Procaína</td><td style="text-align:center;padding:8px 12px">4–10</td><td style="text-align:center;padding:8px 12px">48–72 h</td><td style="text-align:center;padding:8px 12px">—</td></tr>
+            <tr><td style="padding:8px 12px;font-weight:600">Oxitetraciclina</td><td style="text-align:center;padding:8px 12px">18–22</td><td style="text-align:center;padding:8px 12px">7</td><td style="text-align:center;padding:8px 12px">—</td></tr>
+            <tr style="background:#FAFAFA"><td style="padding:8px 12px;font-weight:600">Enrofloxacino</td><td style="text-align:center;padding:8px 12px">14–28</td><td style="text-align:center;padding:8px 12px">🚫 No autorizado</td><td style="text-align:center;padding:8px 12px">—</td></tr>
+            <tr><td style="padding:8px 12px;font-weight:600">Amoxicilina</td><td style="text-align:center;padding:8px 12px">14</td><td style="text-align:center;padding:8px 12px">3–4</td><td style="text-align:center;padding:8px 12px">—</td></tr>
+            <tr style="background:#FAFAFA"><td style="padding:8px 12px;font-weight:600">Ivermectina iny.</td><td style="text-align:center;padding:8px 12px">28–49</td><td style="text-align:center;padding:8px 12px">🚫 No autorizado</td><td style="text-align:center;padding:8px 12px">—</td></tr>
+            <tr><td style="padding:8px 12px;font-weight:600">Albendazol</td><td style="text-align:center;padding:8px 12px">7–14</td><td style="text-align:center;padding:8px 12px">🚫 No en lactancia</td><td style="text-align:center;padding:8px 12px">—</td></tr>
+            <tr style="background:#FAFAFA"><td style="padding:8px 12px;font-weight:600">Meloxicam bovino</td><td style="text-align:center;padding:8px 12px">15</td><td style="text-align:center;padding:8px 12px">5</td><td style="text-align:center;padding:8px 12px">—</td></tr>
+            <tr><td style="padding:8px 12px;font-weight:600">Flunixin meglumina</td><td style="text-align:center;padding:8px 12px">4</td><td style="text-align:center;padding:8px 12px">36 h</td><td style="text-align:center;padding:8px 12px">—</td></tr>
+            <tr style="background:#FAFAFA"><td style="padding:8px 12px;font-weight:600">Closantel</td><td style="text-align:center;padding:8px 12px">28</td><td style="text-align:center;padding:8px 12px">🚫 No en lactancia</td><td style="text-align:center;padding:8px 12px">—</td></tr>
+            <tr><td style="padding:8px 12px;font-weight:600">PGF2α (Dinoprost)</td><td style="text-align:center;padding:8px 12px">1</td><td style="text-align:center;padding:8px 12px">0</td><td style="text-align:center;padding:8px 12px">—</td></tr>
+            <tr style="background:#FAFAFA"><td style="padding:8px 12px;font-weight:600">Dexametasona</td><td style="text-align:center;padding:8px 12px">3–8</td><td style="text-align:center;padding:8px 12px">3</td><td style="text-align:center;padding:8px 12px">—</td></tr>
+            <tr><td style="padding:8px 12px;font-weight:600">Oxitetraciclina (aves)</td><td style="text-align:center;padding:8px 12px">5</td><td style="text-align:center;padding:8px 12px">—</td><td style="text-align:center;padding:8px 12px">7</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:.73rem;color:var(--gris);margin-top:8px;padding:0 2px">⚠️ Datos orientativos. Verificar siempre en ficha técnica del producto específico y regulación SAG/ISP vigente.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════ PANEL ESPECIES ═══════════════════ -->
+<div id="panel-especies" class="especies-panel">
+  <div style="padding:16px 16px 0"><div class="tips-section-title">🐾 Características Farmacológicas por Especie</div></div>
+  <div class="especie-cards-grid" style="padding:0 16px 24px">
+
+    <div class="especie-card">
+      <div class="especie-card-header"><span class="esp-card-emoji">🐕</span><div><div class="esp-card-name">Canino</div><div class="esp-card-latin">Canis lupus familiaris</div></div></div>
+      <div class="especie-card-body">
+        <div class="esp-fact"><span class="esp-fact-icon">⚖️</span>Peso referencia: 2–80 kg (raza dependiente). Muy relevante para calcular dosis.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">💊</span>Metabolismo hepático eficiente. Tolera bien la mayoría de fármacos.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">🔴</span>Tóxicos: paracetamol (alta dosis), uva, xilitol, chocolate, cebollas, cebollín.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">🧬</span>Mutación MDR1 (ABCB1): algunas razas no toleran ivermectina, loperamida, vincristina.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">💉</span>Vías habituales: VO, SC, IM, IV (vena cefálica o safena).</div>
+        <div class="esp-tag-row">
+          <span class="esp-tag">Razas MDR1+: Collie, Shetland, BC</span>
+          <span class="esp-tag">Vómito inducible</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="especie-card">
+      <div class="especie-card-header" style="background:linear-gradient(135deg,#C4607A,#D4879A)"><span class="esp-card-emoji">🐈</span><div><div class="esp-card-name">Felino</div><div class="esp-card-latin">Felis catus</div></div></div>
+      <div class="especie-card-body">
+        <div class="esp-fact"><span class="esp-fact-icon">⚖️</span>Peso referencia: 3–7 kg. Dosis muy pequeñas — calcular con precisión.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">⚠️</span><strong>Deficiencia de glucuronidación hepática.</strong> Metabolizan muchos fármacos muy lentamente → acumulación tóxica.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">🔴</span>Tóxicos ABSOLUTOS: paracetamol, ivermectina, permetrina (spot-on de perros), AAS, ibuprofeno.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">💊</span>Enrofloxacino: máx 5 mg/kg/día — dosis mayores causan ceguera irreversible.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">💉</span>Inyecciones SC bien toleradas. Vena yugular más accesible que cefálica.</div>
+        <div class="esp-tag-row">
+          <span class="esp-tag">Sin glucuronidación</span>
+          <span class="esp-tag">Muy sensibles a opioides</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="especie-card">
+      <div class="especie-card-header" style="background:linear-gradient(135deg,#8D7060,#A08070)"><span class="esp-card-emoji">🐄</span><div><div class="esp-card-name">Bovino</div><div class="esp-card-latin">Bos taurus / Bos indicus</div></div></div>
+      <div class="especie-card-body">
+        <div class="esp-fact"><span class="esp-fact-icon">⚖️</span>Peso referencia: 300–700 kg adulto. Ternero: 30–80 kg.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">🌿</span>Rumiante. Fermentación ruminal altera biodisponibilidad de fármacos orales. Muchos antibióticos orales son ineficaces.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">💉</span>IM en músculo del cuello preferible a glúteo (calidad de la canal). No superar 20 mL/sitio IM.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">⚡</span>Muy sensibles a xilazina — 1/10 de la dosis equina IV.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">🥛</span>Período de retiro en leche: obligatorio verificar siempre.</div>
+        <div class="esp-tag-row">
+          <span class="esp-tag">Rumiante</span><span class="esp-tag">Retiro leche crítico</span><span class="esp-tag">Xilazina sensible</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="especie-card">
+      <div class="especie-card-header" style="background:linear-gradient(135deg,#5B8ED6,#7AAAE0)"><span class="esp-card-emoji">🐴</span><div><div class="esp-card-name">Equino</div><div class="esp-card-latin">Equus caballus</div></div></div>
+      <div class="especie-card-body">
+        <div class="esp-fact"><span class="esp-fact-icon">⚖️</span>Peso referencia: 400–600 kg adulto. Potro: 50–200 kg.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">🏃</span>Monogástrico herbívoro. Fermentación en ciego. El tránsito intestinal rápido afecta biodisponibilidad oral.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">🚫</span>Flunixin: <strong>NUNCA IM</strong> → miositis clostridial grave (gangrena gaseosa). Solo IV.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">💊</span>AINEs pueden causar úlceras gástricas fácilmente. Alto riesgo de EGUS (síndrome úlcera gástrica).</div>
+        <div class="esp-fact"><span class="esp-fact-icon">🔴</span>Tóxicos: ivermectina a altas dosis, macrólidos (azitromicina en adultos → colitis fatal).</div>
+        <div class="esp-tag-row">
+          <span class="esp-tag">Flunixin solo IV</span><span class="esp-tag">Riesgo EGUS</span><span class="esp-tag">Cólico urgencia</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="especie-card">
+      <div class="especie-card-header" style="background:linear-gradient(135deg,#4FA898,#6DBFB3)"><span class="esp-card-emoji">🐑</span><div><div class="esp-card-name">Ovino</div><div class="esp-card-latin">Ovis aries</div></div></div>
+      <div class="especie-card-body">
+        <div class="esp-fact"><span class="esp-fact-icon">⚖️</span>Peso referencia: 40–90 kg adulto. Cordero: 10–30 kg.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">⚠️</span>Rumiante. <strong>Altamente sensibles a xilazina</strong> — calcular con extremo cuidado.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">🦠</span>Alta prevalencia de resistencia antihelmíntica en Chile. Rotar principios activos. Usar FAMACHA.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">🐣</span>Caprinos tienen mayor tasa metabólica — suelen requerir dosis más altas que bovinos para algunos fármacos.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">🚫</span>Closantel: tóxico a dosis altas → ceguera y muerte.</div>
+        <div class="esp-tag-row">
+          <span class="esp-tag">Rumiante</span><span class="esp-tag">Resistencia helmintos</span><span class="esp-tag">Xilazina sensible</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="especie-card">
+      <div class="especie-card-header" style="background:linear-gradient(135deg,#D4845A,#E09A78)"><span class="esp-card-emoji">🐖</span><div><div class="esp-card-name">Porcino</div><div class="esp-card-latin">Sus scrofa domesticus</div></div></div>
+      <div class="especie-card-body">
+        <div class="esp-fact"><span class="esp-fact-icon">⚖️</span>Peso referencia: 80–150 kg adulto. Lechón 1 mes: 5–8 kg.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">💊</span>Buen metabolismo oral. Absorción gastrointestinal similar a humanos → muchos fármacos funcionan VO.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">💉</span>IM: músculo cervical (detrás de la oreja) o jamón. Máx 2–3 mL por sitio en lechones.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">🌡️</span>Muy sensibles al estrés térmico. Considerar para manejo farmacológico y contención.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">🔴</span>Hipertermia maligna: susceptibles genéticamente (raza Pietrain) con algunos anestésicos volátiles.</div>
+        <div class="esp-tag-row">
+          <span class="esp-tag">Monogástrico</span><span class="esp-tag">Estrés térmico</span><span class="esp-tag">HM susceptible</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="especie-card">
+      <div class="especie-card-header" style="background:linear-gradient(135deg,#6BBFAA,#8DCFBF)"><span class="esp-card-emoji">🐐</span><div><div class="esp-card-name">Caprino</div><div class="esp-card-latin">Capra aegagrus hircus</div></div></div>
+      <div class="especie-card-body">
+        <div class="esp-fact"><span class="esp-fact-icon">⚖️</span>Peso referencia: 30–80 kg adulto.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">⚡</span><strong>Mayor tasa de metabolismo</strong> que ovinos y bovinos. Muchos fármacos requieren dosis más altas o intervalos más cortos.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">🚫</span>Closantel: mayor sensibilidad que ovinos. Usar con extrema precaución.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">📋</span>Gran parte de la farmacología caprina es "off-label" — pocos productos registrados específicamente.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">🥛</span>Retiro en leche muy importante (producción quesera).</div>
+        <div class="esp-tag-row">
+          <span class="esp-tag">Rumiante</span><span class="esp-tag">Metabolismo rápido</span><span class="esp-tag">Off-label frecuente</span>
+        </div>
+      </div>
+
+    <div class="especie-card">
+      <div class="especie-card-header" style="background:linear-gradient(135deg,#D4845A,#E09A78)"><span class="esp-card-emoji">🐓</span><div><div class="esp-card-name">Aves de Corral</div><div class="esp-card-latin">Gallus gallus domesticus y otras</div></div></div>
+      <div class="especie-card-body">
+        <div class="esp-fact"><span class="esp-fact-icon">⚖️</span>Peso referencia: Gallina adulta 1,5–3 kg. Pollo broiler 2–3 kg. Pavo adulto 8–15 kg. Pato 2–4 kg.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">⚡</span><strong>Metabolismo muy rápido</strong> y temperatura corporal alta (41–42°C). Las dosis son generalmente más altas por kg que en mamíferos.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">🌊</span>Administración masiva en agua de bebida es la vía más práctica en parvadas. Calcular consumo de agua real antes de dosificar.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">🔴</span>Tóxicos: ivermectina a dosis mamíferos, ionóforos en combinación con tiamulina (mortal), macrólidos en ciertas aves.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">🥚</span>Período de retiro en huevo obligatorio además del de carne — muchos antibióticos no están autorizados en ponedoras.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">💉</span>Vías: VO (agua/alimento/jeringa), IM en pechuga o muslo, SC en pliegue alario. Vena yugular o alar para IV.</div>
+        <div class="esp-tag-row">
+          <span class="esp-tag">Retiro huevo crítico</span><span class="esp-tag">Agua/alimento</span><span class="esp-tag">T° corporal alta</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="especie-card">
+      <div class="especie-card-header" style="background:linear-gradient(135deg,#8B5DB5,#A07CC9)"><span class="esp-card-emoji">🦙</span><div><div class="esp-card-name">Camélidos Sudamericanos</div><div class="esp-card-latin">Lama glama / Vicugna pacos</div></div></div>
+      <div class="especie-card-body">
+        <div class="esp-fact"><span class="esp-fact-icon">⚖️</span>Peso referencia: Llama adulta 130–200 kg. Alpaca adulta 55–80 kg. Cría (tuis): 20–40 kg.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">⚠️</span><strong>Farmacocinética poco estudiada</strong> — la mayoría de protocolos son off-label extrapolados de ovinos/bovinos. Precaución extrema.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">🌿</span>Pseudorumiantes (3 compartimentos gástricos, no 4). La fermentación es diferente a bovinos/ovinos — algunos antibióticos orales sí pueden funcionar.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">💉</span>Vías: IM en músculo epaxial lumbar o glúteo. SC en zona lateral del cuello. IV en vena yugular (única accesible fácilmente).</div>
+        <div class="esp-fact"><span class="esp-fact-icon">🩸</span>Son susceptibles a anemia hemolítica con varios oxidantes. Evitar propofol IV prolongado y algunas fenotiazinas.</div>
+        <div class="esp-fact"><span class="esp-fact-icon">🌡️</span>Sensibles a estrés térmico y al manejo brusco — pueden desarrollar miopatía de captura (similar a síndrome del cerdo de estrés).</div>
+        <div class="esp-tag-row">
+          <span class="esp-tag">Off-label casi todo</span><span class="esp-tag">Pseudorumiante</span><span class="esp-tag">Miopatía captura</span>
+        </div>
+      </div>
+    </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════ PANEL VIRAL ═══════════════════ -->
+<div id="panel-viral" style="display:none;padding:16px">
+
+  <div class="tips-section-title" style="margin-bottom:16px">🦠 Enfermedades Virales — Manejo Farmacológico</div>
+
+  <div style="background:#FFF8E1;border:1px solid #FFECB3;border-radius:10px;padding:10px 14px;font-size:.8rem;color:#795548;margin-bottom:16px;display:flex;gap:8px">
+    <span>⚠️</span>
+    <span><strong>No existe tratamiento antiviral específico</strong> para la mayoría de estas enfermedades. El manejo es <strong>sintomático y de soporte</strong>. Siempre derivar al veterinario. Esta sección orienta el manejo farmacológico mientras se gestiona la derivación.</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px">
+
+    <!-- PARVOVIRUS -->
+    <div style="background:#fff;border-radius:16px;border:2px solid #FFCDD2;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.07)">
+      <div style="background:linear-gradient(135deg,#C26060,#D47F7F);padding:14px 16px;color:#fff">
+        <div style="font-family:Nunito,sans-serif;font-size:1.15rem;font-weight:900">🔴 Parvovirus Canino</div>
+        <div style="font-size:.78rem;opacity:.9;margin-top:2px">Parvovirus tipo 2 (CPV-2) — Alta mortalidad sin tratamiento</div>
+      </div>
+      <div style="padding:14px 16px">
+        <div style="font-size:.8rem;font-weight:700;color:#B71C1C;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">⚡ Signos de alarma</div>
+        <div style="font-size:.82rem;color:#455A64;margin-bottom:12px;line-height:1.5">Vómito intenso · diarrea hemorrágica · depresión severa · fiebre o hipotermia · deshidratación rápida. Cachorros 6–20 semanas más vulnerables.</div>
+
+        <div style="font-size:.8rem;font-weight:700;color:#B71C1C;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">💊 Manejo farmacológico</div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px">
+          <div style="background:#FFF3E0;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>🔑 Fluidos IV</strong> — Ringer Lactato o SF 0,9% a dosis de choque: 20–30 mL/kg IV en 15–20 min. Luego mantenimiento según deshidratación. <em>Es la intervención más importante.</em>
+          </div>
+          <div style="background:#E8F5E9;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>🤢 Maropitant</strong> — 1 mg/kg SC c/24 h. Antiemético de primera línea, también reduce dolor abdominal (efecto NK1 visceral).
+          </div>
+          <div style="background:#E8F5E9;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>🤢 Ondansetrón</strong> — 0,1–0,2 mg/kg IV/IM c/8–12 h. Si el vómito no cede con maropitant.
+          </div>
+          <div style="background:#E3F2FD;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>💊 Ampicilina o Amoxicilina</strong> — 22 mg/kg IV/IM c/8 h. Previene sepsis bacteriana secundaria (translocación bacteriana intestinal).
+          </div>
+          <div style="background:#F3E5F5;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>🩸 Glucosa</strong> — Monitorear glucemia. Si hipoglicemia: glucosa 50% diluida en fluidos IV (0,5–1 mL/kg).
+          </div>
+        </div>
+
+        <div style="font-size:.8rem;font-weight:700;color:#B71C1C;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">🚨 Derivación urgente si</div>
+        <div style="font-size:.81rem;color:#455A64;line-height:1.5">Diarrea hemorrágica profusa · colapso · temperatura &lt;37°C · cachorro menor de 8 semanas · no retiene líquidos en 12 h.</div>
+
+        <div style="margin-top:10px;padding-top:8px;border-top:1px solid #FFCDD2;font-size:.76rem;color:#9E9E9E">
+          🛡️ Prevención: vacunación a las 6–8, 10–12 y 14–16 semanas. Refuerzo anual. Virus muy resistente en ambiente (sobrevive meses).
+        </div>
+      </div>
+    </div>
+
+    <!-- DISTEMPER -->
+    <div style="background:#fff;border-radius:16px;border:2px solid #CE93D8;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.07)">
+      <div style="background:linear-gradient(135deg,#8B5DB5,#A07CC9);padding:14px 16px;color:#fff">
+        <div style="font-family:Nunito,sans-serif;font-size:1.15rem;font-weight:900">🟣 Distemper Canino</div>
+        <div style="font-size:.78rem;opacity:.9;margin-top:2px">Morbillivirus — Multisistémico, alta mortalidad</div>
+      </div>
+      <div style="padding:14px 16px">
+        <div style="font-size:.8rem;font-weight:700;color:#6A1B9A;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">⚡ Signos por fase</div>
+        <div style="font-size:.82rem;color:#455A64;margin-bottom:12px;line-height:1.5"><strong>Fase 1:</strong> fiebre, secreción nasal/ocular, tos. <strong>Fase 2:</strong> diarrea, vómito, neumonía. <strong>Fase 3 (neurológica):</strong> convulsiones, mioclonías, ataxia — pronóstico grave.</div>
+
+        <div style="font-size:.8rem;font-weight:700;color:#6A1B9A;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">💊 Manejo farmacológico</div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px">
+          <div style="background:#E3F2FD;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>💊 Antibióticos</strong> — Para infecciones bacterianas secundarias (neumonía). Amoxicilina-clavulánico 12,5 mg/kg VO c/12 h o Doxiciclina 10 mg/kg VO c/24 h.
+          </div>
+          <div style="background:#E8F5E9;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>🤢 Maropitant / Metoclopramida</strong> — Control del vómito si presente.
+          </div>
+          <div style="background:#FFF3E0;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>💉 Fluidos SC o IV</strong> — Mantener hidratación. Ringer Lactato 50–80 mL/kg/día.
+          </div>
+          <div style="background:#FCE4EC;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>🧠 Fase neurológica:</strong> Fenobarbital 2–5 mg/kg VO c/12 h si convulsiones. Diazepam 0,5 mg/kg IV en crisis aguda. <em>Requiere hospitalización.</em>
+          </div>
+          <div style="background:#F3E5F5;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>👁️ Lesiones oculares:</strong> Lagrimas artificiales. Si uveítis: referir a oftalmólogo veterinario.
+          </div>
+        </div>
+
+        <div style="font-size:.8rem;font-weight:700;color:#6A1B9A;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">🚨 Derivación urgente si</div>
+        <div style="font-size:.81rem;color:#455A64;line-height:1.5">Cualquier signo neurológico · neumonía confirmada · estado general muy comprometido.</div>
+
+        <div style="margin-top:10px;padding-top:8px;border-top:1px solid #CE93D8;font-size:.76rem;color:#9E9E9E">
+          🛡️ Prevención: vacuna polivalente (DHPPi) a las 6–8, 10–12 y 14–16 semanas. Refuerzo anual o trienal. No hay tratamiento curativo.
+        </div>
+      </div>
+    </div>
+
+    <!-- LEUCEMIA FELINA -->
+    <div style="background:#fff;border-radius:16px;border:2px solid #80CBC4;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.07)">
+      <div style="background:linear-gradient(135deg,#4FA898,#6DBFB3);padding:14px 16px;color:#fff">
+        <div style="font-family:Nunito,sans-serif;font-size:1.15rem;font-weight:900">🟢 Leucemia Felina (FeLV)</div>
+        <div style="font-size:.78rem;opacity:.9;margin-top:2px">Retrovirus — Inmunosupresión progresiva</div>
+      </div>
+      <div style="padding:14px 16px">
+        <div style="font-size:.8rem;font-weight:700;color:#00695C;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">⚡ Signos</div>
+        <div style="font-size:.82rem;color:#455A64;margin-bottom:12px;line-height:1.5">Pérdida de peso progresiva · anemia · linfadenopatía · infecciones recurrentes · estomatitis · tumores (linfoma). Muchos gatos son portadores asintomáticos por meses o años.</div>
+
+        <div style="font-size:.8rem;font-weight:700;color:#00695C;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">💊 Manejo farmacológico</div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px">
+          <div style="background:#E0F2F1;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>💊 Antibióticos</strong> — Para infecciones oportunistas. Elegir según cultivo. Amoxicilina-clavulánico primera línea.
+          </div>
+          <div style="background:#FFF3E0;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>🤢 Antieméticos + soporte nutricional</strong> — Maropitant si hay náuseas. Estimulantes del apetito: Mirtazapina 1,88 mg/gato VO c/48–72 h.
+          </div>
+          <div style="background:#FCE4EC;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>🩸 Anemia:</strong> Si severa, transfusión o eritropoyetina (requiere veterinario). Suplemento de hierro VO como soporte.
+          </div>
+          <div style="background:#E8F5E9;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>🛡️ Inmunomoduladores:</strong> Interferón omega felino (si disponible). Uso controversial pero reportado en la literatura.
+          </div>
+        </div>
+
+        <div style="font-size:.8rem;font-weight:700;color:#00695C;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">🚨 Derivación urgente si</div>
+        <div style="font-size:.81rem;color:#455A64;line-height:1.5">Anemia severa (mucosas blancas) · disnea · masas palpables · crisis aguda.</div>
+
+        <div style="margin-top:10px;padding-top:8px;border-top:1px solid #80CBC4;font-size:.76rem;color:#9E9E9E">
+          🛡️ Prevención: vacuna disponible (no incluida en plan básico — consultar veterinario). Test rápido FeLV/FIV antes de introducir gato nuevo al hogar. Separar gatos positivos de negativos.
+        </div>
+      </div>
+    </div>
+
+    <!-- RINOTRAQUEITIS FELINA -->
+    <div style="background:#fff;border-radius:16px;border:2px solid #FFCC80;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.07)">
+      <div style="background:linear-gradient(135deg,#D4845A,#E09A78);padding:14px 16px;color:#fff">
+        <div style="font-family:Nunito,sans-serif;font-size:1.15rem;font-weight:900">🟠 Complejo Respiratorio Felino</div>
+        <div style="font-size:.78rem;opacity:.9;margin-top:2px">Herpesvirus (FHV-1) + Calicivirus (FCV)</div>
+      </div>
+      <div style="padding:14px 16px">
+        <div style="font-size:.8rem;font-weight:700;color:#E65100;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">⚡ Signos</div>
+        <div style="font-size:.82rem;color:#455A64;margin-bottom:12px;line-height:1.5">Estornudos · secreción nasal y ocular · conjuntivitis · úlceras orales (calicivirus) · fiebre · anorexia. El herpesvirus puede causar brotes recurrentes de por vida (latencia).</div>
+
+        <div style="font-size:.8rem;font-weight:700;color:#E65100;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">💊 Manejo farmacológico</div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px">
+          <div style="background:#E3F2FD;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>💊 Doxiciclina</strong> — 5–10 mg/kg VO c/12–24 h × 14–21 días. Cubre Chlamydophila y Mycoplasma coinfectantes frecuentes. <em>Dar con alimento y agua.</em>
+          </div>
+          <div style="background:#E8F5E9;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>👁️ Ojos:</strong> Colirio de cloranfenicol o tobramicina c/6–8 h si hay secreción purulenta. Limpiar con suero fisiológico.
+          </div>
+          <div style="background:#FFF3E0;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>🍖 Estimulante del apetito:</strong> Mirtazapina 1,88 mg/gato VO c/48–72 h si anorexia. Crítico — los gatos no deben estar más de 48 h sin comer (lipidosis hepática).
+          </div>
+          <div style="background:#F3E5F5;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>🦠 Herpesvirus (brotes):</strong> L-Lisina 250–500 mg/gato/día VO — reduce replicación viral. Evidencia moderada pero seguro y económico.
+          </div>
+          <div style="background:#E0F2F1;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>💧 Vapores:</strong> Nebulización con SF 0,9% 10–15 min c/8–12 h. Fluidifica secreciones. Sin medicamentos en el nebulizador.
+          </div>
+        </div>
+
+        <div style="margin-top:10px;padding-top:8px;border-top:1px solid #FFCC80;font-size:.76rem;color:#9E9E9E">
+          🛡️ Prevención: vacuna trivalente (RCP) — núcleo del plan vacunal felino. El herpesvirus nunca se elimina — manejo del estrés reduce brotes.
+        </div>
+      </div>
+    </div>
+
+    <!-- PARVOVIROSIS FELINA -->
+    <div style="background:#fff;border-radius:16px;border:2px solid #B0BEC5;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.07)">
+      <div style="background:linear-gradient(135deg,#6B7C8A,#8A9BA8);padding:14px 16px;color:#fff">
+        <div style="font-family:Nunito,sans-serif;font-size:1.15rem;font-weight:900">⚫ Panleucopenia Felina</div>
+        <div style="font-size:.78rem;opacity:.9;margin-top:2px">Parvovirus felino (FPV) — "Distemper felino"</div>
+      </div>
+      <div style="padding:14px 16px">
+        <div style="font-size:.8rem;font-weight:700;color:#37474F;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">⚡ Signos</div>
+        <div style="font-size:.82rem;color:#455A64;margin-bottom:12px;line-height:1.5">Vómito súbito · diarrea (puede ser hemorrágica) · depresión intensa · fiebre alta · dolor abdominal · leucopenia severa. Alta mortalidad en gatitos no vacunados.</div>
+
+        <div style="font-size:.8rem;font-weight:700;color:#37474F;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">💊 Manejo farmacológico</div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px">
+          <div style="background:#FFF3E0;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>🔑 Fluidos IV</strong> — Igual que parvovirus canino. Ringer Lactato a dosis de soporte. Prioridad absoluta.
+          </div>
+          <div style="background:#E8F5E9;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>🤢 Maropitant</strong> — 1 mg/kg SC c/24 h. Control del vómito.
+          </div>
+          <div style="background:#E3F2FD;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>💊 Antibióticos</strong> — Ampicilina 22 mg/kg IV/IM c/8 h. Prevención sepsis por translocación bacteriana.
+          </div>
+          <div style="background:#FCE4EC;border-radius:8px;padding:8px 10px;font-size:.81rem">
+            <strong>🩸 Leucopenia severa:</strong> Factor estimulante de colonias (G-CSF) — solo disponible en clínicas especializadas. Transfusión de plasma en casos graves.
+          </div>
+        </div>
+
+        <div style="font-size:.8rem;font-weight:700;color:#37474F;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">🚨 Derivación urgente si</div>
+        <div style="font-size:.81rem;color:#455A64;line-height:1.5">Todo caso sospechoso en gatito no vacunado es emergencia. Mortalidad hasta 90% sin tratamiento intensivo.</div>
+
+        <div style="margin-top:10px;padding-top:8px;border-top:1px solid #B0BEC5;font-size:.76rem;color:#9E9E9E">
+          🛡️ Prevención: vacuna trivalente felina (RCP). Muy efectiva. El virus es extremadamente resistente en el ambiente — desinfectar con hipoclorito 1:32.
+        </div>
+      </div>
+    </div>
+
+    <!-- RABIA -->
+    <div style="background:#fff;border-radius:16px;border:2px solid #EF9A9A;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.07)">
+      <div style="background:linear-gradient(135deg,#8B5DB5,#C26060);padding:14px 16px;color:#fff">
+        <div style="font-family:Nunito,sans-serif;font-size:1.15rem;font-weight:900">☣️ Rabia</div>
+        <div style="font-size:.78rem;opacity:.9;margin-top:2px">Lyssavirus — Zoonosis. Notificación obligatoria.</div>
+      </div>
+      <div style="padding:14px 16px">
+        <div style="background:#FFEBEE;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:.83rem;color:#B71C1C;font-weight:600">
+          🚨 NO HAY TRATAMIENTO. Si se sospecha rabia en un animal, NO manipular. Llamar inmediatamente al SAG o SEREMI de Salud. Protocolo de salud pública.
+        </div>
+        <div style="font-size:.8rem;font-weight:700;color:#7B1FA2;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">⚡ Signos en animales</div>
+        <div style="font-size:.82rem;color:#455A64;margin-bottom:12px;line-height:1.5"><strong>Forma furiosa:</strong> agresividad extrema, desorientación, hipersalivación, cambios de conducta bruscos. <strong>Forma paralítica:</strong> debilidad progresiva, parálisis, disfagia.</div>
+
+        <div style="font-size:.8rem;font-weight:700;color:#7B1FA2;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">👤 Exposición humana</div>
+        <div style="font-size:.82rem;color:#455A64;line-height:1.5;margin-bottom:10px">Mordedura o contacto con saliva en mucosas o heridas → lavar herida con agua y jabón 15 min → acudir a urgencias <strong>inmediatamente</strong> → profilaxis post-exposición (vacuna antirrábica humana).</div>
+
+        <div style="margin-top:10px;padding-top:8px;border-top:1px solid #EF9A9A;font-size:.76rem;color:#9E9E9E">
+          🛡️ Prevención animal: vacuna antirrábica anual obligatoria en Chile. Notificación al SAG ante sospecha. Chile es país libre de rabia canina urbana — casos esporádicos en murciélagos.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /panel-viral -->
+
+</div><!-- /main-content -->
+</div><!-- /app-shell -->
+
+<!-- ═══════════════════ MODAL ═══════════════════ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div>
+        <div class="modal-drug-name" id="mDrugName"></div>
+        <div class="modal-drug-class" id="mDrugClass"></div>
+        <span class="cat-badge" id="mCatBadge" style="margin-top:5px"></span>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="mModalBody"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+//  BASE DE DATOS — FARMACOS
+//  Fuentes: Plumb's VDH 10ª ed. / Merck Vet Manual
+// ═══════════════════════════════════════════════════
+const FARMACOS = [
+  // ── ANTIMICROBIANOS ──────────────────────
+  {id:1,nombre:"Penicilina G Procaína",clase:"Betalactámico — Penicilina",categoria:"antimicrobianos",
+   indicaciones:"Infecciones bacterianas por grampositivos: clostridiosis, mastitis, neumonía bovina, actinomicosis, metritis",
+   mecanismo:"Inhibe síntesis de pared celular bacteriana bloqueando PBP (proteínas fijadoras de penicilina). Bactericida tiempo-dependiente.",
+   vias:["IM","SC"],especies:["bovino","equino","ovino","porcino","caprino"],
+   dosis:[{especie:"bovino",emoji:"🐄",dosis:"22.000 UI/kg IM/SC c/24 h × 3–5 días"},{especie:"equino",emoji:"🐴",dosis:"22.000 UI/kg IM c/12 h"},{especie:"ovino",emoji:"🐑",dosis:"22.000 UI/kg IM c/24 h"},{especie:"porcino",emoji:"🐖",dosis:"22.000 UI/kg IM c/24 h"},{especie:"caprino",emoji:"🐐",dosis:"22.000 UI/kg IM c/24 h"}],
+   contraindicaciones:["Hipersensibilidad a betalactámicos","Roedores (cobayos, hamsters) — fatal","NO administrar IV (formulación procaína provoca convulsiones)"],
+   advertencias:"Período retiro: carne 4–10 días, leche 48–72 h. Verificar regulación SAG.",
+   tipFarmaceutico:{tipo:"inyectable",pasos:["Atemperar a temperatura corporal antes de inyectar (fría duele más y absorbe peor)","Agitar suavemente el frasco — es una suspensión","Usar aguja 18G para bovinos. No reutilizar","Rotar sitios de inyección. Máx 20 mL/sitio en bovinos","Si el animal reacciona fuertemente: puede ser reacción a la procaína — observar 30 min"],
+   almacenamiento:"Refrigerado 2–8°C. Proteger de luz. Vida útil: verificar fecha vencimiento.",fuente:"Plumb's VDH 10ª ed., Merck Vet Manual"}},
+
+  {id:2,nombre:"Oxitetraciclina",clase:"Tetraciclina",categoria:"antimicrobianos",
+   indicaciones:"Anaplasmosis, queratoconjuntivitis infecciosa (Moraxella bovis), neumonía, leptospirosis, ehrlichiosis, brucelosis (coadyuvante)",
+   mecanismo:"Inhibe síntesis proteica ribosomal (subunidad 30S). Bacteriostático amplio espectro.",
+   vias:["IM","IV","SC","VO (agua)"],especies:["bovino","equino","ovino","porcino","canino","ave","camelido"],
+   dosis:[{especie:"bovino",emoji:"🐄",dosis:"6,6–11 mg/kg IM c/24 h; Long Acting: 20 mg/kg IM c/72 h"},{especie:"equino",emoji:"🐴",dosis:"6,6 mg/kg IV lento (en 1L SF) c/12 h"},{especie:"ovino",emoji:"🐑",dosis:"6,6–11 mg/kg IM c/24 h"},{especie:"porcino",emoji:"🐖",dosis:"6,6–11 mg/kg IM c/24–48 h"},{especie:"canino",emoji:"🐕",dosis:"10 mg/kg VO c/8 h (con alimento)"},{especie:"ave",emoji:"🐓",dosis:"25–50 mg/kg VO c/12 h o 200–800 ppm en agua de bebida × 5 días"},{especie:"camelido",emoji:"🦙",dosis:"6,6–11 mg/kg IM c/24 h (off-label, similar a ovinos)"}],
+   contraindicaciones:["Gestación avanzada — daño en dentición y huesos de crías","Insuficiencia hepática severa","No mezclar con soluciones alcalinas ni calcio","NUNCA IV rápido — colapso cardiovascular"],
+   advertencias:"Retiro: carne 18–22 días, leche 7 días (no autorizada en lactación en muchos países). Nefrotóxica en sobredosis.",
+   tipFarmaceutico:{tipo:"inyectable",pasos:["La formulación Long Acting (LA) es más viscosa — usar aguja 16G","IV: diluir en 1L de SF o glucosa 5%, pasar en 30–60 min mínimo","No mezclar con penicilinas en la misma jeringa","Puede causar irritación local intensa IM — masajear el sitio post-inyección","Forma depósitos en tejidos calcificados"],
+   almacenamiento:"Temperatura ambiente 15–25°C. Proteger de luz solar — se degrada y puede volverse nefrotóxica. No refrigerar formulaciones LA.",fuente:"Plumb's VDH 10ª ed., Merck Vet Manual"}},
+
+  {id:3,nombre:"Enrofloxacino",clase:"Fluoroquinolona",categoria:"antimicrobianos",
+   indicaciones:"Infecciones respiratorias, urinarias, dérmicas, Mycoplasma, Pasteurella, E. coli, Salmonella, infecciones por gramnegativos resistentes",
+   mecanismo:"Inhibe ADN girasa (topoisomerasa II) y topoisomerasa IV bacteriana. Bactericida concentración-dependiente.",
+   vias:["VO","IM","SC"],especies:["canino","felino","bovino","porcino","ovino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"5–20 mg/kg VO/SC c/24 h"},{especie:"felino",emoji:"🐈",dosis:"5 mg/kg VO/SC c/24 h — NUNCA superar"},{especie:"bovino",emoji:"🐄",dosis:"2,5–5 mg/kg IM/SC c/24 h"},{especie:"porcino",emoji:"🐖",dosis:"2,5 mg/kg IM c/24 h"},{especie:"ovino",emoji:"🐑",dosis:"5 mg/kg IM c/24 h (off-label)"},{especie:"ave",emoji:"🐓",dosis:"10 mg/kg VO/IM c/24 h o 50–100 ppm en agua de bebida × 5–7 días"},{especie:"camelido",emoji:"🦙",dosis:"5 mg/kg IM/SC c/24 h (off-label, extrapolado de ovinos)"}],
+   contraindicaciones:["🔴 FELINOS: >5 mg/kg → ceguera irreversible (degeneración retiniana)","Animales jóvenes en crecimiento — daño cartilaginoso articular","Gestación y lactación","Convulsiones — puede bajar el umbral epiléptico"],
+   advertencias:"Antibiótico de importancia crítica humana (OMS). Uso restringido en producción animal. Consultar SAG. No usar en sistemas de agua comunal.",
+   tipFarmaceutico:{tipo:"oral_inyectable",pasos:["Comprimidos: se pueden dar con o sin alimento, aunque el alimento retarda absorción levemente","SC: técnica correcta — no inyectar IV accidentalmente","Usar el ciclo completo (mínimo 5–7 días) — es de los más afectados por abandono de tratamiento","En aves: solo en agua de bebida individual, no comunitaria"],
+   almacenamiento:"Temperatura ambiente hasta 25°C. Proteger de luz.",fuente:"Plumb's VDH 10ª ed., OMS Lista Antibióticos Críticos"}},
+
+  {id:4,nombre:"Amoxicilina",clase:"Betalactámico — Aminopenicilina",categoria:"antimicrobianos",
+   indicaciones:"Infecciones dérmicas, respiratorias bajas, urinarias, gastrointestinales. Mastitis, metritis bovina",
+   mecanismo:"Inhibe síntesis de pared celular. Mayor espectro que Pen G (incluye gramnegativos). Bactericida tiempo-dependiente.",
+   vias:["VO","IM","SC"],especies:["canino","felino","bovino","porcino","ovino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"11–22 mg/kg VO c/8–12 h"},{especie:"felino",emoji:"🐈",dosis:"11–22 mg/kg VO c/12 h"},{especie:"bovino",emoji:"🐄",dosis:"6,6–11 mg/kg IM/SC c/24 h"},{especie:"porcino",emoji:"🐖",dosis:"6,6 mg/kg IM c/24 h"},{especie:"ovino",emoji:"🐑",dosis:"6,6 mg/kg IM c/24 h"}],
+   contraindicaciones:["Hipersensibilidad a penicilinas o cefalosporinas","🔴 Conejos, cobayas, chinchillas — enteritis fatal","Insuficiencia renal grave (ajustar dosis)"],
+   advertencias:"Amoxicilina + Ácido Clavulánico amplía espectro (betalactamasas). Suspensión oral: preparar con agua fría, refrigerar tras reconstitución.",
+   tipFarmaceutico:{tipo:"suspension_oral",pasos:["Reconstituir con agua hervida fría — verificar la marca de agua en el frasco","Agitar bien hasta no ver grumos","Refrigerar una vez reconstituida (2–8°C)","Vigencia post-reconstitución: generalmente 14 días — anotar fecha en el frasco","Dar con o sin alimento. Con alimento reduce náuseas","Medir con jeringa dosificadora, no con cucharita"],
+   almacenamiento:"Polvo seco: temperatura ambiente. Suspensión reconstituida: refrigerado 2–8°C, máx 14 días.",fuente:"Plumb's VDH 10ª ed., Merck Vet Manual"}},
+
+  {id:5,nombre:"Sulfatrimetoprim (STX)",clase:"Sulfonamida + Diaminopirimidina",categoria:"antimicrobianos",
+   indicaciones:"Infecciones respiratorias, urinarias, gastrointestinales. Coccidiosis (coadyuvante). Amplio espectro grampositivos y gramnegativos",
+   mecanismo:"Inhibición secuencial de la síntesis de ácido fólico bacteriano (sulfa inhibe dihidropteroato sintasa, TMP inhibe dihidrofolato reductasa). Bactericida en combinación.",
+   vias:["VO","IV","IM"],especies:["canino","felino","bovino","equino","ovino","porcino","caprino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"15–30 mg/kg VO/IV c/12 h"},{especie:"felino",emoji:"🐈",dosis:"15 mg/kg VO c/12 h (con precaución)"},{especie:"bovino",emoji:"🐄",dosis:"24 mg/kg VO c/12–24 h (uso oral limitado por rumen)"},{especie:"equino",emoji:"🐴",dosis:"30 mg/kg VO c/12 h"},{especie:"ovino",emoji:"🐑",dosis:"24 mg/kg VO c/12 h"},{especie:"porcino",emoji:"🐖",dosis:"30 mg/kg VO c/12 h"},{especie:"caprino",emoji:"🐐",dosis:"24–30 mg/kg VO c/12 h"}],
+   contraindicaciones:["Insuficiencia hepática o renal grave","Keratoconjuntivitis seca (KCS) en perros con uso prolongado","Primer trimestre de gestación","No usar en animales con déficit de folato"],
+   advertencias:"Asegurar hidratación adecuada (cristaluria). En perros raza Dobermann puede causar anemia por hipersensibilidad. Retiro: carne 10 días, leche 96 h.",
+   tipFarmaceutico:{tipo:"oral_inyectable",pasos:["La forma IV debe diluirse en SF o glucosa — nunca administrar directamente","Comprimidos: asegurar que el animal beba agua tras la dosis (evita cristaluria)","En polvo para mezcla en agua: preparar diariamente, no estable en solución por más de 24 h","Dar con alimento para reducir irritación gastrointestinal"],
+   almacenamiento:"Temperatura ambiente hasta 25°C. Proteger de luz y humedad.",fuente:"Plumb's VDH 10ª ed."}},
+
+  // ── ANTIPARASITARIOS ────────────────────
+  {id:6,nombre:"Ivermectina",clase:"Lactona macrocíclica — Avermectina",categoria:"antiparasitarios",
+   indicaciones:"Nematodos gastrointestinales y pulmonares, ectoparásitos (sarna, piojo), prevención dirofilariosis. Oestrosis ovina (Oestrus ovis)",
+   mecanismo:"Potencia canales Cl⁻ modulados por glutamato en nervios y músculo de invertebrados → parálisis y muerte del parásito. No cruza BHE en mamíferos (excepto mutación MDR1).",
+   vias:["VO","SC","Pour-on"],especies:["canino","bovino","equino","ovino","porcino","caprino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"0,006 mg/kg VO mensual (dirofilariosis). Sarnas: 0,2–0,4 mg/kg SC c/14 días × 2–3 dosis — solo razas sin MDR1"},{especie:"bovino",emoji:"🐄",dosis:"0,2 mg/kg SC o 0,5 mg/kg pour-on"},{especie:"equino",emoji:"🐴",dosis:"0,2 mg/kg VO (pasta equina)"},{especie:"ovino",emoji:"🐑",dosis:"0,2 mg/kg SC/VO"},{especie:"porcino",emoji:"🐖",dosis:"0,3 mg/kg IM/SC"},{especie:"caprino",emoji:"🐐",dosis:"0,2 mg/kg SC (off-label; algunos recomiendan 0,3 mg/kg)"}],
+   contraindicaciones:["🔴 NO en Collies y razas MDR1+ sin test — riesgo de muerte","🔴 ABSOLUTAMENTE CONTRAINDICADA EN GATOS","Tortugas y quelonios — alta toxicidad","Potrillos y terneros menores de 3 meses — precaución"],
+   advertencias:"Retiro carne bovino: 28–49 días según formulación. NO autorizada en leche en Chile. Razas sensibles MDR1: Collie, Shetland Sheepdog, Aus. Shepherd, Border Collie, Old English Sheepdog.",
+   tipFarmaceutico:{tipo:"inyectable_pour-on",pasos:["Pour-on: aplicar en línea dorsal de cabeza a cola, piel seca e íntegra","No aplicar en días de lluvia — se diluye y pierde efectividad","SC: levantar carpa de piel y depositar en tejido subcutáneo, no IM","Pasta equina: colocar en base de lengua mientras el animal no pueda escupir","No bañar al animal ni mojarlo con lluvia por 48 h post aplicación","Rotar principios activos si hay sospecha de resistencia"],
+   almacenamiento:"Temperatura ambiente 15–25°C. Proteger de luz solar directa. No congelar.",fuente:"Plumb's VDH 10ª ed., Merck Vet Manual, AVMA"}},
+
+  {id:7,nombre:"Albendazol",clase:"Bencimidazol — Antihelmíntico",categoria:"antiparasitarios",
+   indicaciones:"Nematodos y cestodos GI, Fasciola hepatica adulta, Moniezia spp. en rumiantes. Giardia en perros",
+   mecanismo:"Inhibe polimerización de β-tubulina parasitaria → interfiere captación de glucosa → degeneración celular y muerte del parásito.",
+   vias:["VO"],especies:["bovino","ovino","caprino","equino","canino"],
+   dosis:[{especie:"bovino",emoji:"🐄",dosis:"7,5 mg/kg VO dosis única"},{especie:"ovino",emoji:"🐑",dosis:"7,5 mg/kg VO dosis única"},{especie:"caprino",emoji:"🐐",dosis:"7,5–15 mg/kg VO (metabolismo más rápido)"},{especie:"equino",emoji:"🐴",dosis:"5–10 mg/kg VO dosis única"},{especie:"canino",emoji:"🐕",dosis:"25–50 mg/kg VO c/12 h × 2 días (Giardia: 25 mg/kg c/24 h × 5 días)"}],
+   contraindicaciones:["🔴 TERATOGÉNICO — contraindicado primeros 45 días de gestación en ovinos, primer trimestre en general","Insuficiencia hepática grave"],
+   advertencias:"Resistencia bencimidazoles muy extendida en Chile (Haemonchus contortus). Monitorear con McMaster pre/post. Retiro: 7–14 días carne, no en lactación.",
+   tipFarmaceutico:{tipo:"suspension_oral",pasos:["Agitar bien el frasco antes de medir — es una suspensión que sedimenta","Administrar directamente en la boca con jeringa drencher en bovinos/ovinos","No mezclar con otros fármacos en la misma jeringa","Dar en ayunas o con mínimo alimento mejora absorción","Monitorear eficacia con conteo de huevos 14 días post tratamiento"],
+   almacenamiento:"Temperatura ambiente 15–25°C. Proteger de luz y calor. No congelar.",fuente:"Plumb's VDH 10ª ed., FAO Resistencia Antihelmíntica"}},
+
+  {id:8,nombre:"Closantel",clase:"Salicilanilida — Fasciolicida/Nematodicida",categoria:"antiparasitarios",
+   indicaciones:"Fasciola hepatica (adultos e inmaduros ≥6 semanas), Haemonchus contortus resistente, Oestrus ovis, Dicrocoelium (eficacia parcial)",
+   mecanismo:"Desacoplador de fosforilación oxidativa parasitaria. Alta lipofilicidad → larga vida media en tejidos grasos del hospedador.",
+   vias:["VO","SC","Pour-on"],especies:["bovino","ovino","caprino"],
+   dosis:[{especie:"bovino",emoji:"🐄",dosis:"10 mg/kg VO o SC dosis única"},{especie:"ovino",emoji:"🐑",dosis:"10 mg/kg VO o SC dosis única"},{especie:"caprino",emoji:"🐐",dosis:"10 mg/kg VO (mayor sensibilidad — vigilar)"}],
+   contraindicaciones:["🔴 NO en perros, gatos ni equinos — toxicidad ocular grave e irreversible","Precaución extrema en caprinos","No administrar SC en cuello — reacciones tisulares severas","Gestación: riesgo fetal — evitar en primer trimestre"],
+   advertencias:"Vida media muy larga (~14 días en ovinos). Retiro: 28 días carne bovino, no autorizado en leche ovina/caprina para consumo humano en varias regiones.",
+   tipFarmaceutico:{tipo:"inyectable",pasos:["SC preferiblemente en tabla del cuello o en pliegue preescapular — NO en cuello","Usar aguja 18G","Volumen por sitio: máx 5 mL en ovinos, 10 mL en bovinos","La reacción en el sitio de inyección es normal — observar por infección secundaria","Si se usa VO: dar directamente con jeringa drencher en base de lengua"],
+   almacenamiento:"Temperatura ambiente hasta 25°C. Proteger de luz. No congelar.",fuente:"Plumb's VDH 10ª ed., Merck Vet Manual"}},
+
+  {id:9,nombre:"Fipronil",clase:"Fenilpirazol — Ectoparasiticida",categoria:"antiparasitarios",
+   indicaciones:"Pulgas (adultas), garrapatas, piojos masticadores en perros y gatos",
+   mecanismo:"Bloquea receptores GABA-dependientes de Cl⁻ en insectos → sobreestimulación neuronal → muerte del ectoparásito.",
+   vias:["Tópico (spot-on)","Spray"],especies:["canino","felino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"Spot-on: 6,76 mg/kg mensual"},{especie:"felino",emoji:"🐈",dosis:"Spot-on: 6,26 mg/kg mensual"}],
+   contraindicaciones:["🔴 NO en conejos — letal","No en animales enfermos o debilitados","No bañar ni mojar al animal 48 h antes/después de aplicación","Evitar contacto con ojos y mucosas"],
+   advertencias:"Contaminante ambiental. No lavar animal en cursos de agua. Tóxico para peces y crustáceos.",
+   tipFarmaceutico:{tipo:"topico",pasos:["Aplicar directamente sobre la piel (no sobre el pelo) en zona interescapular o nuca — donde el animal no pueda lamerse","Separar el pelo con los dedos hasta ver la piel","Presionar el aplicador completamente hasta vaciar","Si el animal tiene dermatitis o heridas en el sitio — cambiar a otra zona","Usar guantes para la aplicación — absorción cutánea en humanos","Si el animal se lame: puede babear excesivamente por el sabor amargo, no es tóxico"],
+   almacenamiento:"Temperatura ambiente hasta 25°C. Proteger de luz solar.",fuente:"Plumb's VDH 10ª ed."}},
+
+  // ── AINEs ────────────────────────────────
+  {id:10,nombre:"Meloxicam",clase:"AINE — Inhibidor COX-2 preferente",categoria:"aines",
+   indicaciones:"Dolor musculoesquelético, inflamación post-quirúrgica, artritis, fiebre bovina peripartal, dolor en porcinos (SMEDI, posvacunal)",
+   mecanismo:"Inhibe preferentemente COX-2 (prostaglandinas proinflamatorias) con menor COX-1. Antipirético, analgésico, antiinflamatorio.",
+   vias:["VO","SC","IV","IM"],especies:["canino","felino","bovino","porcino","equino","ovino","caprino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"0,2 mg/kg VO/SC dosis única, luego 0,1 mg/kg c/24 h"},{especie:"felino",emoji:"🐈",dosis:"0,3 mg/kg SC dosis única perioperatoria"},{especie:"bovino",emoji:"🐄",dosis:"0,5 mg/kg SC/IV c/24 h"},{especie:"porcino",emoji:"🐖",dosis:"0,4 mg/kg IM dosis única"},{especie:"equino",emoji:"🐴",dosis:"0,6 mg/kg IV/VO c/24 h"},{especie:"ovino",emoji:"🐑",dosis:"0,5 mg/kg SC (off-label)"},{especie:"caprino",emoji:"🐐",dosis:"0,5 mg/kg SC (off-label)"}],
+   contraindicaciones:["Úlceras gastrointestinales activas","Insuficiencia renal o hepática grave","Gestación avanzada — cierre prematuro ductus arterioso","No combinar con otros AINEs ni corticosteroides"],
+   advertencias:"Felinos: metabolismo lento, riesgo de toxicidad renal con uso crónico. Retiro bovino: carne 15 días, leche 5 días.",
+   tipFarmaceutico:{tipo:"oral_inyectable",pasos:["Suspensión oral: agitar bien. Dosis de inicio es el doble de las siguientes — importante no omitir","SC: depósito subcutáneo — levantar carpa de piel","IV: administrar lentamente (>60 segundos)","Con alimento en VO: disminuye náuseas aunque puede reducir levemente absorción","Gatos: dosis única perioperatoria es lo más seguro — el uso crónico requiere monitoreo renal"],
+   almacenamiento:"Temperatura ambiente 15–25°C. Suspensión oral: puede refrigerar, pero no necesario.",fuente:"Plumb's VDH 10ª ed., Merck Vet Manual"}},
+
+  {id:11,nombre:"Flunixin Meglumina",clase:"AINE — Inhibidor no selectivo COX",categoria:"aines",
+   indicaciones:"Cólico equino (dolor visceral), endotoxemia, fiebre, mastitis bovina aguda, dolor postquirúrgico bovino y porcino",
+   mecanismo:"Inhibición no selectiva COX-1 y COX-2. Potente analgesia visceral, especialmente en equinos. Antipirético potente.",
+   vias:["IV","IM (no en equinos)","VO"],especies:["bovino","equino","porcino","ovino","canino"],
+   dosis:[{especie:"bovino",emoji:"🐄",dosis:"2,2 mg/kg IV/IM c/24 h (máx 3–5 días)"},{especie:"equino",emoji:"🐴",dosis:"1,1 mg/kg IV c/12 h — SOLO IV"},{especie:"porcino",emoji:"🐖",dosis:"2,2 mg/kg IM c/24 h"},{especie:"ovino",emoji:"🐑",dosis:"2,2 mg/kg IV/IM (off-label)"},{especie:"canino",emoji:"🐕",dosis:"1,1 mg/kg IV/IM c/12–24 h (uso agudo)"}],
+   contraindicaciones:["🔴 EN EQUINOS: NUNCA IM — miositis clostridial (gangrena gaseosa) potencialmente fatal","Insuficiencia renal preexistente","No usar más de 5 días consecutivos","No en cachorros <6 semanas"],
+   advertencias:"Retiro bovino: carne 4 días, leche 36 h. Alto riesgo ulcerogénico con uso prolongado. EQUINOS: SOLO IV.",
+   tipFarmaceutico:{tipo:"inyectable",pasos:["EQUINOS: IV exclusivamente — yugular, cefálica o safena. Nunca IM","IV: administrar lentamente en 30–60 segundos. Rápido puede causar descenso brusco de PA","Bovinos: IM en músculo cervical preferible","Mezclar puede precipitar — no mezclar con otros fármacos en la misma jeringa","Observar mejoría en 30–60 min en cólico equino — si no mejora, sospecha de obstrucción"],
+   almacenamiento:"Temperatura ambiente hasta 25°C. No congelar. Proteger de luz.",fuente:"Plumb's VDH 10ª ed., Merck Vet Manual"}},
+
+  {id:12,nombre:"Aspirina (AAS)",clase:"AINE — Salicilato",categoria:"aines",
+   indicaciones:"Analgesia y antipiresis en bovinos y equinos. Antinflamatorio en perros. SOLO situaciones de campo como alternativa de emergencia.",
+   mecanismo:"Inhibe irreversiblemente COX-1 y COX-2 por acetilación. Antiagregante plaquetario permanente en la dosis terapéutica.",
+   vias:["VO"],especies:["canino","bovino","equino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"10–25 mg/kg VO c/12 h (nunca primera línea — usar meloxicam)"},{especie:"bovino",emoji:"🐄",dosis:"100 mg/kg VO c/12 h (dosis muy alta — semivida muy corta en bovinos)"},{especie:"equino",emoji:"🐴",dosis:"10–100 mg/kg VO c/12 h"}],
+   contraindicaciones:["🔴 ABSOLUTAMENTE CONTRAINDICADA EN GATOS — semivida >30 h, letal","No usar en porcinos ni en ovinos","No combinar con otros AINEs, heparina ni anticoagulantes","Precaución con úlceras GI"],
+   advertencias:"En bovinos la semivida es muy corta (1–2 h) — efecto limitado. En gatos UNA tableta puede matar al animal. No reemplaza a meloxicam ni flunixin.",
+   tipFarmaceutico:{tipo:"oral",pasos:["Comprimidos: triturar y disolver en agua para administración en bovinos","No dar con estómago vacío — irritante gástrico","En perros: dar con alimento para reducir riesgo de úlceras","NUNCA dar a un gato aunque el dueño insista — explicar que es letal","Registrar que se trata de AAS y la dosis dada — interacciones importantes"],
+   almacenamiento:"Temperatura ambiente seca. El AAS en tabletas huele a vinagre cuando se degrada — descartar si hay ese olor.",fuente:"Plumb's VDH 10ª ed."}},
+
+  {id:13,nombre:"Paracetamol (Acetaminofén)",clase:"Analgésico/Antipirético — No AINE",categoria:"aines",
+   indicaciones:"Analgesia leve-moderada y antipiresis en CANINOS únicamente",
+   mecanismo:"Inhibe síntesis de prostaglandinas en SNC. Escasa actividad antiinflamatoria periférica. Mecanismo exacto no completamente aclarado.",
+   vias:["VO"],especies:["canino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"10–15 mg/kg VO c/8–12 h (no primera línea — usar meloxicam)"}],
+   contraindicaciones:["🔴 ABSOLUTAMENTE CONTRAINDICADO EN GATOS — metahemoglobinemia, letal con una dosis","🔴 NO usar en bovinos, equinos, ovinos, porcinos","Hepatopatía en perros","Sobredosis en perros: daño hepático grave"],
+   advertencias:"Antídoto intoxicación felina: N-acetilcisteína IV. Señal de intoxicación en gato: cianosis de mucosas, edema facial, disnea. EMERGENCIA.",
+   tipFarmaceutico:{tipo:"oral",pasos:["VERIFICAR siempre la especie antes de dispensar — el error es frecuente y mortal en gatos","No dar tabletas de 500 mg completas a perros pequeños — fraccionar con cuidado","Dar con alimento para reducir irritación gástrica","Si el dueño menciona que ya le dio a su gato: emergencia veterinaria inmediata"],
+   almacenamiento:"Temperatura ambiente seca.",fuente:"Plumb's VDH 10ª ed., ASPCA Animal Poison Control"}},
+
+  // ── ANESTESIA ────────────────────────────
+  {id:14,nombre:"Xilazina",clase:"α2-agonista — Sedante/Analgésico",categoria:"anestesia",
+   indicaciones:"Sedación, analgesia visceral, miorrelajación. Preanestesia grandes animales. Cólico equino. Procedimientos menores en campo.",
+   mecanismo:"Agonismo α2-adrenérgico pre y postsináptico → inhibición de noradrenalina → sedación, analgesia y bradicardia.",
+   vias:["IV","IM","SC"],especies:["bovino","equino","canino","felino","ovino","caprino"],
+   dosis:[{especie:"bovino",emoji:"🐄",dosis:"0,05–0,1 mg/kg IV (muy sensibles) o 0,1–0,2 mg/kg IM"},{especie:"equino",emoji:"🐴",dosis:"0,5–1,1 mg/kg IV (sedación); 1,1 mg/kg IV (decúbito)"},{especie:"canino",emoji:"🐕",dosis:"0,5–2 mg/kg IM (combinar con ketamina)"},{especie:"felino",emoji:"🐈",dosis:"0,5–1 mg/kg IM (muy sensibles — inicio lento 5–10 min)"},{especie:"ovino",emoji:"🐑",dosis:"0,05–0,1 mg/kg IM (altamente sensibles)"},{especie:"caprino",emoji:"🐐",dosis:"0,05–0,1 mg/kg IM"}],
+   contraindicaciones:["Cardiopatías (bradicardia severa, bloqueo AV)","Hipotensión y shock","Gestación avanzada (puede inducir parto)","🔴 Bovinos y ovinos: 10× más sensibles que equinos — NUNCA extrapolar dosis equina"],
+   advertencias:"Antídoto: Atipamezol (atipamazol) para reversar. Tener disponible. Bovino IV: 1/10 de dosis equina.",
+   tipFarmaceutico:{tipo:"inyectable",pasos:["BOVINOS: dosis IV es 1/10 de la equina — error frecuente y mortal","Tener atipamezol disponible SIEMPRE antes de aplicar","Latencia IV: 2–5 min equinos, 5–15 min IM en otras especies","El animal puede parecer dormido pero sigue consciente del dolor — siempre combinar con analgesia","Posicionar en decúbito lateral sobre el lado izquierdo en bovinos (rumen)","Nunca dejar solo al animal sedado — riesgo de aspiración"],
+   almacenamiento:"Temperatura ambiente hasta 25°C. Proteger de luz. No congelar.",fuente:"Plumb's VDH 10ª ed., Merck Vet Manual"}},
+
+  {id:15,nombre:"Ketamina",clase:"Anestésico disociativo — Antagonista NMDA",categoria:"anestesia",
+   indicaciones:"Anestesia general breve, inducción anestésica (SIEMPRE combinada con sedante), procedimientos de campo, cirugías menores",
+   mecanismo:"Bloquea receptores NMDA glutamatérgicos → anestesia disociativa. Ojos abiertos, reflejo laríngeo conservado, tono muscular aumentado. NO produce miorrelajación.",
+   vias:["IV","IM"],especies:["canino","felino","equino","ovino","caprino","porcino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"5–10 mg/kg IM (previa xilazina 1 mg/kg IM) o 2–4 mg/kg IV"},{especie:"felino",emoji:"🐈",dosis:"11–33 mg/kg IM (previa xilazina 0,5 mg/kg IM)"},{especie:"equino",emoji:"🐴",dosis:"2,2 mg/kg IV (inducción, previa sedación xilazina 1,1 mg/kg IV)"},{especie:"ovino",emoji:"🐑",dosis:"2–4 mg/kg IV (previa sedación)"},{especie:"caprino",emoji:"🐐",dosis:"2–4 mg/kg IV (previa sedación)"},{especie:"porcino",emoji:"🐖",dosis:"10–15 mg/kg IM (con azaperona 2,2 mg/kg IM)"}],
+   contraindicaciones:["NUNCA usar sola — siempre combinar con α2-agonista o benzodiacepina","Hipertensión intracraneal grave","Convulsiones activas no controladas","Cirugías de laringe/faringe: reflejo laríngeo conservado no protege completamente"],
+   advertencias:"Sin sedación previa: rigidez muscular, convulsiones, recuperación agitada. Controlada en Chile (Ley 20.000). Recuperación puede ser prolongada.",
+   tipFarmaceutico:{tipo:"inyectable",pasos:["Preparar la combinación ketamina + xilazina en la misma jeringa es posible y común en campo","Protocolos combo en perros: xilazina IM → esperar 5–10 min → ketamina IM","Tener atipamezol para revertir el componente xilazina en recuperación","Mantener vía aérea libre — posicionar cabeza ligeramente más baja que el cuerpo","No estimular al animal en recuperación — puede provocar excitación","Controlar temperatura — estos animales se hipotermian fácilmente en campo"],
+   almacenamiento:"Temperatura ambiente hasta 25°C. Proteger de luz. No congelar. Almacenamiento bajo llave (controlado).",fuente:"Plumb's VDH 10ª ed."}},
+
+  {id:16,nombre:"Propofol",clase:"Anestésico general IV — Fenol alquílico",categoria:"anestesia",
+   indicaciones:"Inducción y mantenimiento anestésico en perros y gatos. Procedimientos cortos o como inductores previo a anestesia inhalatoria.",
+   mecanismo:"Potencia receptores GABA-A → hipnosis rápida y de corta duración. No tiene propiedades analgésicas.",
+   vias:["IV"],especies:["canino","felino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"4–6 mg/kg IV lento (2 mg/kg/min) hasta efecto"},{especie:"felino",emoji:"🐈",dosis:"4–8 mg/kg IV lento (mayor variabilidad individual)"}],
+   contraindicaciones:["🔴 GATOS: uso prolongado (>30 min) causa síndrome de oxidación de Heinz — anemia hemolítica. Máximo 1–2 inducciones breves","Sin monitoreo cardiorrespiratorio disponible","Shock hipovolémico severo — provoca hipotensión importante"],
+   advertencias:"No tiene efecto analgésico — siempre combinar con analgesia adecuada. Emulsión lipídica: no usar frasco abierto más de 12 h. Conservar en frío.",
+   tipFarmaceutico:{tipo:"inyectable_especial",pasos:["Emulsión blanca, aspecto lechoso — normal. Si hay separación de fases, descartar","Administrar IV lento en 30–60 segundos — rápido provoca apnea","Tener equipo de intubación y ventilación manual disponible SIEMPRE","Frasco abierto: máx 12 h a temperatura ambiente, desechar el resto","No mezclar con otros fármacos en la misma jeringa","Calentar levemente si estaba refrigerado — la hipotermia aumenta la depresión cardiovascular"],
+   almacenamiento:"Refrigerado 2–8°C. Una vez abierto: máx 12 h. Proteger de luz.",fuente:"Plumb's VDH 10ª ed."}},
+
+  // ── REPRODUCTIVOS ────────────────────────
+  {id:17,nombre:"Oxitocina",clase:"Hormona polipeptídica — Uterotónico",categoria:"reproductivos",
+   indicaciones:"Estimulación contráctil (distocia con cuello DILATADO), placenta retenida, agalaxia porcina (MMA), bajada de leche",
+   mecanismo:"Agonista receptores de oxitocina en miometrio → contracción. Receptores aumentan al final de gestación y en lactación.",
+   vias:["IV","IM","SC"],especies:["bovino","equino","canino","felino","porcino","ovino","caprino"],
+   dosis:[{especie:"bovino",emoji:"🐄",dosis:"20–50 UI IM/SC (distocia); 10–20 UI IV lento (placenta retenida)"},{especie:"equino",emoji:"🐴",dosis:"20–40 UI IM (placenta retenida); 10–20 UI IV"},{especie:"canino",emoji:"🐕",dosis:"2–10 UI IM/SC (según tamaño)"},{especie:"felino",emoji:"🐈",dosis:"1–3 UI IM/SC"},{especie:"porcino",emoji:"🐖",dosis:"20–30 UI IM (MMA/agalaxia)"},{especie:"ovino",emoji:"🐑",dosis:"10–20 UI IM"},{especie:"caprino",emoji:"🐐",dosis:"10–20 UI IM"}],
+   contraindicaciones:["🔴 ABSOLUTAMENTE CONTRAINDICADA con cuello NO DILATADO — ruptura uterina","Presentación fetal anómala sin corrección previa","Desproporción fetopélvica","Útero cicatricial (cesáreas previas)"],
+   advertencias:"Causa más frecuente de muerte materna por mala indicación. VERIFICAR cuello completamente dilatado antes de dar. Baja PA si se da IV rápido.",
+   tipFarmaceutico:{tipo:"inyectable_frio",pasos:["ANTES de administrar: verificar manualmente que el cuello esté dilatado ≥ 2 dedos","Si hay duda sobre presentación fetal: llamar al veterinario antes de dar","IV: SIEMPRE lento y diluido, nunca en bolo directo","IM/SC: efecto en 3–7 min","Si no hay respuesta en 20 min: no repetir sin nueva evaluación","Conservar en frío — actividad puede disminuir si no se mantiene la cadena de frío"],
+   almacenamiento:"Refrigerado 2–8°C. Cadena de frío obligatoria. No congelar. Proteger de luz.",fuente:"Plumb's VDH 10ª ed., Merck Vet Manual"}},
+
+  {id:18,nombre:"PGF2α — Dinoprost",clase:"Prostaglandina F2α — Luteolítico",categoria:"reproductivos",
+   indicaciones:"Sincronización de celos, lisis de cuerpo lúteo, inducción de parto, tratamiento de piómetra, endometritis crónica",
+   mecanismo:"Lisis del cuerpo lúteo → caída de progesterona → reinicio ciclo estral. Produce contracción uterina y broncoconstricción.",
+   vias:["IM","SC"],especies:["bovino","equino","canino","porcino","ovino","caprino"],
+   dosis:[{especie:"bovino",emoji:"🐄",dosis:"25 mg IM dosis única (luteólisis); 2 dosis c/11 días en protocolos"},{especie:"equino",emoji:"🐴",dosis:"5–10 mg IM (luteólisis)"},{especie:"canino",emoji:"🐕",dosis:"0,1–0,25 mg/kg SC c/12 h × 3–5 días (piómetra — solo cuerpo lúteo activo)"},{especie:"porcino",emoji:"🐖",dosis:"10–17,5 mg IM (sincronización parto)"},{especie:"ovino",emoji:"🐑",dosis:"10–15 mg IM"},{especie:"caprino",emoji:"🐐",dosis:"5–10 mg IM"}],
+   contraindicaciones:["🔴 POTENTE ABORTIVO — NO en gestaciones a mantener","Asma y enfermedades respiratorias obstructivas","🔴 RIESGO PARA OPERADOR: embarazadas y asmáticos NO manipular"],
+   advertencias:"Absorción cutánea — guantes obligatorios. Efectos en humanos: broncoespasmo, aborto en embarazadas. Lavar con agua si hay contacto. Retiro: carne 1 día, leche 0.",
+   tipFarmaceutico:{tipo:"inyectable_riesgo",pasos:["⚠️ PONERSE GUANTES ANTES de tocar el frasco","Leer la ficha de seguridad (MSDS) antes del primer uso","IM en región gluteal o cervical según especie","Si hay contacto con piel: lavar inmediatamente con agua y jabón por 10 min","Si embarazada o asmática en el equipo: asignar a otra persona","En protocolos de sincronización bovino: anotar exactamente la hora de la primera dosis"],
+   almacenamiento:"Refrigerado 2–8°C. Cadena de frío obligatoria. No desechar al lavabo o campo.",fuente:"Plumb's VDH 10ª ed., Merck Vet Manual"}},
+
+  {id:19,nombre:"Progesterona",clase:"Progestágeno — Hormona sexual",categoria:"reproductivos",
+   indicaciones:"Mantenimiento de gestación temprana (insuficiencia luteínica), sincronización de celos (CIDR/dispositivos), tratamiento de aborto habitual",
+   mecanismo:"Agonismo de receptores de progesterona → mantenimiento del endometrio gestacional, supresión del eje HHA, inhibición de celo.",
+   vias:["IM","SC","Intravaginal (CIDR/PRID)"],especies:["bovino","equino","ovino","caprino","canino"],
+   dosis:[{especie:"bovino",emoji:"🐄",dosis:"CIDR: 1 dispositivo intravaginal × 7 días. Inyectable: 100–250 mg IM cada 3 días (en aceite)"},{especie:"equino",emoji:"🐴",dosis:"150–300 mg IM c/24 h (en aceite de sésamo — formulación específica equina)"},{especie:"ovino",emoji:"🐑",dosis:"CIDR/esponja intravaginal × 12–14 días"},{especie:"caprino",emoji:"🐐",dosis:"Esponja intravaginal × 14 días"},{especie:"canino",emoji:"🐕",dosis:"2–10 mg/kg IM c/48 h (mantenimiento gestación)"}],
+   contraindicaciones:["No en animales con infección uterina (piómetra, metritis) — favorece el crecimiento bacteriano","No en presencia de tumor mamario dependiente de hormonas","No combinar con estrógenos sin indicación veterinaria específica"],
+   advertencias:"Dispositivos intravaginales (CIDR): retirar en la fecha exacta. Progesterona inyectable en aceite: agitar bien, usar aguja de calibre adecuado.",
+   tipFarmaceutico:{tipo:"dispositivo_inyectable",pasos:["CIDR bovino: aplicador específico, higienizar externamente vulva antes de insertar","Registrar fecha de inserción y fecha programada de retiro","La progesterona en aceite es muy viscosa — calentar ligeramente y usar aguja 18G","Inyectable: volúmenes grandes → rotar sitios IM","Si se observa flujo vaginal anormal con CIDR: retirar y consultar"],
+   almacenamiento:"Inyectable en aceite: temperatura ambiente hasta 25°C. CIDRs: temperatura ambiente, en envase cerrado.",fuente:"Plumb's VDH 10ª ed."}},
+
+  // ── GASTROINTESTINAL ─────────────────────
+  {id:20,nombre:"Omeprazol",clase:"Inhibidor de Bomba de Protones (IBP)",categoria:"gastrointestinal",
+   indicaciones:"Síndrome úlcera gástrica equina (EGUS), gastropatía por AINEs, reflujo gastroesofágico canino/felino, úlceras de estrés",
+   mecanismo:"Inhibe irreversiblemente H⁺/K⁺ ATPasa (bomba de protones) de células parietales gástricas → reduce secreción ácida.",
+   vias:["VO","IV"],especies:["canino","felino","equino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"0,5–1 mg/kg VO c/24 h (en ayunas, 30–60 min antes de comer)"},{especie:"felino",emoji:"🐈",dosis:"0,5–1 mg/kg VO c/24 h"},{especie:"equino",emoji:"🐴",dosis:"4 mg/kg VO c/24 h (formulaciones entéricas equinas específicas)"}],
+   contraindicaciones:["Hipersensibilidad","Uso prolongado sin monitoreo: hipergastrinemia, alteración microbiota","Interacción con ketoconazol, digoxina, vitamina B12 oral"],
+   advertencias:"Formulaciones humanas en equinos tienen BAJA biodisponibilidad (pH gástrico muy alto). Usar formulaciones pasta equinas específicas. Administrar en ayunas.",
+   tipFarmaceutico:{tipo:"oral",pasos:["EQUINOS: comprimidos humanos casi no funcionan — pH gástrico equino destruye el fármaco antes de absorberse","Equinos: usar formulación pasta equina específica (p. ej. GastroGard) o formulación enterorresistente","DAR EN AYUNAS, al menos 30–60 min antes del alimento — el ácido tras comer inactiva el fármaco en absorción","No triturar cápsulas de liberación retardada — rompe la cubierta entérica","En perros y gatos: cápsula entera o granel específico sin cubierta dañada"],
+   almacenamiento:"Temperatura ambiente seca hasta 25°C. Proteger de humedad y luz.",fuente:"Plumb's VDH 10ª ed., ECEIM"}},
+
+  {id:21,nombre:"Metronidazol",clase:"Nitroimidazol — Antiprotozoario / Anaerobicida",categoria:"gastrointestinal",
+   indicaciones:"Giardia, tricomonas, infecciones anaerobias (colitis, peritonitis), encefalopatía hepática, diarreas bacterianas anaerobias",
+   mecanismo:"Metabolito tóxico (radical nitro) altera ADN en microorganismos anaerobios y protozoos. Bactericida/parasiticida en baja tensión O₂.",
+   vias:["VO","IV"],especies:["canino","felino","bovino","equino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"15–25 mg/kg VO c/12 h (Giardia: 25 mg/kg c/24 h × 5–7 días)"},{especie:"felino",emoji:"🐈",dosis:"10–25 mg/kg VO c/24 h (sabor muy amargo — dar con comida)"},{especie:"bovino",emoji:"🐄",dosis:"10 mg/kg VO c/12 h (tricomoniasis)"},{especie:"equino",emoji:"🐴",dosis:"15–25 mg/kg VO c/6–8 h (colitis anaerobia)"}],
+   contraindicaciones:["Primer trimestre de gestación (potencialmente teratogénico)","Neurológico grave preexistente","Insuficiencia hepática severa"],
+   advertencias:"Toxicidad por sobredosis o uso crónico: síndrome vestibular (ataxia, nistagmo) en perros — reversible. Sabor muy amargo → gatos rechazan frecuentemente.",
+   tipFarmaceutico:{tipo:"oral_inyectable",pasos:["GATOS: mezclar con alimento apetecible — pate, atún. Algunos tablets triturados pueden enmascararse","Si el gato babea tras dar el comprimido: es por el sabor amargo, no toxicidad — pero la dosis puede no ser completa","Comprobado que suspensiones comerciales palatables tienen mejor adherencia en felinos","IV: usar solución lista (no preparar extemporánea) — incompatible con muchos fármacos","Dar con o sin alimento — con alimento reduce náuseas"],
+   almacenamiento:"Comprimidos: temperatura ambiente seca. Solución IV: temperatura ambiente hasta 25°C, proteger de luz.",fuente:"Plumb's VDH 10ª ed."}},
+
+  {id:22,nombre:"Kaolín-Pectina",clase:"Adsorbente intestinal — Antidiarreico",categoria:"gastrointestinal",
+   indicaciones:"Diarreas no infecciosas leves, diarrea del recién nacido (terneros, corderos, lechones) como coadyuvante",
+   mecanismo:"Kaolín: silicato alumínico que adsorbe bacterias, toxinas y agua. Pectina: forma gel que recubre la mucosa intestinal. Efecto protector y adsorbente.",
+   vias:["VO"],especies:["canino","felino","bovino","ovino","porcino","caprino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"1–2 mL/kg VO c/2–6 h"},{especie:"felino",emoji:"🐈",dosis:"1–2 mL/kg VO c/2–6 h"},{especie:"bovino",emoji:"🐄",dosis:"60–240 mL/animal VO c/4–6 h (ternero)"},{especie:"ovino",emoji:"🐑",dosis:"30–60 mL/animal VO c/4–6 h (cordero)"},{especie:"porcino",emoji:"🐖",dosis:"30–60 mL/animal VO c/4–6 h (lechón)"},{especie:"caprino",emoji:"🐐",dosis:"30–60 mL VO c/4–6 h (chivato)"}],
+   contraindicaciones:["No reemplaza la terapia de rehidratación en diarreas severas","Puede disminuir absorción de otros fármacos si se dan simultáneamente","Dar otros medicamentos 2 h antes o 4 h después del kaolín"],
+   advertencias:"Herramienta de apoyo, no de primera línea en diarreas infecciosas severas. La rehidratación oral (suero oral) es siempre prioritaria.",
+   tipFarmaceutico:{tipo:"suspension_oral",pasos:["Agitar muy bien antes de cada dosis — sedimenta rápidamente","Dar 2 horas antes de otros medicamentos orales — interfiere con absorción","En terneros/corderos con diarrea: PRIORIDAD es suero oral, kaolín es complemento","Puede estreñir si se usa en exceso — suspender si hay cambio a estreñimiento","Medir con jeringa dosificadora — cucharita es imprecisa"],
+   almacenamiento:"Temperatura ambiente. No refrigerar.",fuente:"Plumb's VDH 10ª ed."}},
+
+  // ── CARDIOVASCULAR ──────────────────────
+  {id:23,nombre:"Digoxina",clase:"Glucósido cardíaco — Inotrópico positivo",categoria:"cardiovascular",
+   indicaciones:"Insuficiencia cardíaca congestiva (ICC) en perros, fibrilación auricular, taquicardia supraventricular",
+   mecanismo:"Inhibe Na⁺/K⁺-ATPasa → ↑ Ca²⁺ intracelular → mayor fuerza de contracción. Efecto vagal: ↓ frecuencia y conducción AV.",
+   vias:["VO","IV"],especies:["canino","felino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"0,005–0,01 mg/kg VO c/12 h (raza dependiente). Dobermann y Spaniel: extremo cuidado"},{especie:"felino",emoji:"🐈",dosis:"0,007 mg/kg VO c/48 h (semivida muy larga en gatos)"}],
+   contraindicaciones:["🔴 Índice terapéutico ESTRECHO — margen muy pequeño entre dosis terapéutica y tóxica","Bloqueo AV 2°-3° grado","Hipopotasemia (potencia toxicidad)","Hipertrófica obstructiva — contraindicada"],
+   advertencias:"Síntomas de toxicidad: vómito, anorexia, arritmias, bradicardia. Monitorear digoxinemia (objetivo: 0,8–2 ng/mL perros). Muchas interacciones farmacológicas.",
+   tipFarmaceutico:{tipo:"oral_iv",pasos:["Dar SIEMPRE a la misma hora, con o sin alimento (elegir uno y mantener)","El alimento disminuye absorción — si se da con comida, mantener consistente","Si el animal vomita o rechaza la dosis: NO repetir sin consultar (riesgo de doble dosis)","Verificar pulso antes de cada dosis — si <60 lpm (perros), no administrar y consultar","Nunca doblar dosis si se olvidó la anterior"],
+   almacenamiento:"Temperatura ambiente hasta 25°C. Proteger de luz.",fuente:"Plumb's VDH 10ª ed."}},
+
+  {id:24,nombre:"Furosemida",clase:"Diurético — Asa de Henle",categoria:"cardiovascular",
+   indicaciones:"Edema pulmonar cardiogénico, ICC, ascitis, edema periférico, hipercalcemia de urgencia",
+   mecanismo:"Inhibe cotransportador Na⁺/K⁺/2Cl⁻ en asa de Henle → natriuresis y diuresis intensa. Reduce precarga cardíaca.",
+   vias:["IV","IM","VO","SC"],especies:["canino","felino","equino","bovino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"2–4 mg/kg IV/IM c/8–12 h (emergencia); 1–2 mg/kg VO c/12 h (mantenimiento)"},{especie:"felino",emoji:"🐈",dosis:"1–2 mg/kg IV/IM c/8–12 h (emergencia); 0,5–1 mg/kg VO c/24 h"},{especie:"equino",emoji:"🐴",dosis:"0,5–1 mg/kg IV c/8–24 h"},{especie:"bovino",emoji:"🐄",dosis:"0,5–1 mg/kg IV/IM (edema agudo, postparto)"}],
+   contraindicaciones:["Deshidratación severa — empeora el estado","Anuria/oliguria sin diagnóstico claro","Hipopotasemia e hiponatremia severas"],
+   advertencias:"Vigilar electrolitos (K⁺, Na⁺, Cl⁻) con uso prolongado. Puede causar ototoxicidad a dosis altas IV rápido. Asegurar agua fresca disponible.",
+   tipFarmaceutico:{tipo:"inyectable",pasos:["IV: administrar lento (>2 min) — rápido puede causar sordera transitoria","IM: puede causar ligero ardor — avisar al propietario","Monitorear orina: el animal debe orinar abundantemente en 30–60 min post-IV","Con acceso restringido a agua el efecto es más intenso — asegurar hidratación","Monitorear potasio: suplementar si el animal está en diurético crónico"],
+   almacenamiento:"Temperatura ambiente. Proteger de luz — la solución IV debe ser clara y amarillo pálido.",fuente:"Plumb's VDH 10ª ed."}},
+
+  // ── NEUROLÓGICO ─────────────────────────
+  {id:25,nombre:"Fenobarbital",clase:"Barbitúrico — Anticonvulsivante",categoria:"neurologico",
+   indicaciones:"Epilepsia idiopática, crisis convulsivas de cualquier causa en perros y gatos. Primera línea en epilepsia canina.",
+   mecanismo:"Potencia GABA-A (aumenta el tiempo de apertura de canales Cl⁻) y bloquea canales Na⁺ voltaje-dependientes → inhibe despolarizaciones repetitivas.",
+   vias:["VO","IV (status epiléptico)"],especies:["canino","felino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"2–5 mg/kg VO c/12 h (inicio: 2 mg/kg, ajustar por fenobarbitalemia)"},{especie:"felino",emoji:"🐈",dosis:"1–2,5 mg/kg VO c/12 h"}],
+   contraindicaciones:["Insuficiencia hepática grave — metabolismo hepático intenso","No suspender bruscamente — puede precipitar status epiléptico","Uso combinado con otros depresores del SNC"],
+   advertencias:"Monitoreo hepático cada 6 meses obligatorio. Ajuste de dosis por nivel sérico (objetivo: 20–40 µg/mL en perros). Sedación las primeras semanas es normal — desaparece.",
+   tipFarmaceutico:{tipo:"oral_controlado",pasos:["Fármaco controlado en Chile — guardar bajo llave, registrar uso","NO suspender bruscamente: disminuir gradualmente en semanas","Dar con alimento para reducir náuseas (primeras semanas)","Si el animal tiene una crisis con tratamiento: registrar duración, tipo y frecuencia","Evitar combinar con antibióticos hepatotóxicos (rifampicina, ketoconazol)","Avisar al propietario: el animal puede estar somnoliento, torpe y con polifagia al inicio — es normal"],
+   almacenamiento:"Temperatura ambiente seca. Almacenamiento bajo llave (controlado). Proteger de luz.",fuente:"Plumb's VDH 10ª ed., IVETF Guidelines"}},
+
+  {id:26,nombre:"Diazepam",clase:"Benzodiacepina — Ansiolítico/Anticonvulsivante",categoria:"neurologico",
+   indicaciones:"Status epiléptico (de elección IV), ansiedad y miedo (tormentas, fuegos), relajante muscular, anorexia en gatos (estimulante apetito)",
+   mecanismo:"Potencia GABA-A → sedación, ansiólisis, miorrelajación, anticonvulsión. Efecto rápido e intenso IV.",
+   vias:["IV","IM (absorción errática)","Rectal"],especies:["canino","felino","equino","bovino","ovino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"Status: 0,5–1 mg/kg IV lento; Ansiedad: 0,5–2 mg/kg VO (poco eficaz VO en perros)"},{especie:"felino",emoji:"🐈",dosis:"Status: 0,5 mg/kg IV; Apetito: 1 mg/kg IM o 0,2 mg/kg IV"},{especie:"equino",emoji:"🐴",dosis:"0,05–0,1 mg/kg IV (con xilazina)"},{especie:"bovino",emoji:"🐄",dosis:"0,05–0,1 mg/kg IV (calmar)"},{especie:"ovino",emoji:"🐑",dosis:"0,1–0,5 mg/kg IV (status)"}],
+   contraindicaciones:["Insuficiencia hepática grave","Glaucoma de ángulo cerrado","🔴 Gatos: uso oral crónico puede causar necrosis hepática fulminante","Depresión respiratoria severa"],
+   advertencias:"Gatos: diazepam oral tiene riesgo de hepatotoxicidad idiosincrática — usar solo IV o IM y en dosis aguda. Controlado.",
+   tipFarmaceutico:{tipo:"inyectable_controlado",pasos:["IV: administrar MUY lento (0,5–1 mg/min) — rápido causa apnea","Se puede administrar rectal si no hay acceso IV — jeringa sin aguja en recto","NO mezclar con otros fármacos — precipita en la jeringa","IM: absorción muy irregular — solo si no hay IV","En gatos: NUNCA dar vía oral de forma crónica — riesgo de fallo hepático fulminante","Fármaco controlado — llave, registro"],
+   almacenamiento:"Temperatura ambiente, proteger de luz. Solución IV: verificar que sea clara.",fuente:"Plumb's VDH 10ª ed."}},
+
+  // ── VITAMINAS Y SUPLEMENTOS ─────────────
+  {id:27,nombre:"Calcio Gluconato",clase:"Electrolito — Suplemento de calcio",categoria:"vitaminas",
+   indicaciones:"Hipocalcemia puerperal bovina (fiebre de leche), hipocalcemia en ovinos/caprinos peripartales, eclampsia canina y felina, tetania hipomagnésica",
+   mecanismo:"Restaura concentraciones séricas de Ca²⁺ → normaliza excitabilidad neuromuscular y función cardíaca.",
+   vias:["IV lento","SC (solución diluida)"],especies:["bovino","equino","ovino","caprino","canino","felino"],
+   dosis:[{especie:"bovino",emoji:"🐄",dosis:"500 mL solución al 23% IV (pasar en 20–30 min mínimo) + SC 250–500 mL"},{especie:"equino",emoji:"🐴",dosis:"250–500 mL solución al 23% IV lento"},{especie:"ovino",emoji:"🐑",dosis:"50–100 mL solución al 23% IV lento"},{especie:"caprino",emoji:"🐐",dosis:"50–100 mL solución al 23% IV lento"},{especie:"canino",emoji:"🐕",dosis:"0,5–1 mL/kg solución al 10% IV muy lento (monitorear ECG si disponible)"},{especie:"felino",emoji:"🐈",dosis:"0,5–1 mL/kg solución al 10% IV muy lento"}],
+   contraindicaciones:["NUNCA administrar IV rápido — arritmias fatales (fibrilación ventricular)","No mezclar con bicarbonato ni fosfatos — precipita","No con digoxina — potencia toxicidad cardiaca del glucósido"],
+   advertencias:"Monitorear FC durante la infusión. Si aparece bradicardia o arritmia: parar inmediatamente. SC: solo soluciones ≤10% para evitar necrosis tisular.",
+   tipFarmaceutico:{tipo:"inyectable_critico",pasos:["IV: pasar MÍNIMO 20–30 minutos en bovinos (500 mL). NO en bolo","Auscultar el corazón durante la infusión — si bradicardia o arritmia: DETENER","SC: diluir al 10% máximo si se da por esta vía — el 23% puro quema el tejido","Si la vaca colapsa tras el calcio IV: posible hipermagnesemia — dar calcio con magnesio","Calentar el frasco a temperatura corporal antes de infundir — el frío frena el corazón","Un frasco (500 mL 23%) contiene ~11,4 g Ca²⁺ elemental — una vaca necesita 9–12 g"],
+   almacenamiento:"Temperatura ambiente. No congelar. Proteger de cristalización en frío.",fuente:"Plumb's VDH 10ª ed., Merck Vet Manual"}},
+
+  {id:28,nombre:"Vitamina B12 (Cianocobalamina)",clase:"Vitamina hidrosoluble — Cofactor metabólico",categoria:"vitaminas",
+   indicaciones:"Deficiencia de cobalto en rumiantes (síndrome de adelgazamiento, anemia), hepatopatías, recuperación post-enfermedad, anemia megaloblástica",
+   mecanismo:"Cofactor esencial en síntesis de ácidos nucléicos y metabolismo del propionato. En rumiantes, el cobalto dietario es convertido en B12 por bacterias ruminales.",
+   vias:["IM","SC","VO"],especies:["bovino","ovino","caprino","canino","felino"],
+   dosis:[{especie:"bovino",emoji:"🐄",dosis:"1.000–3.000 µg IM/SC c/7–14 días (deficiencia cobalto)"},{especie:"ovino",emoji:"🐑",dosis:"500–1.500 µg SC/IM (síndrome marasmo)"},{especie:"caprino",emoji:"🐐",dosis:"250–500 µg SC/IM"},{especie:"canino",emoji:"🐕",dosis:"250–1.000 µg SC/IM semanal (déficit)"},{especie:"felino",emoji:"🐈",dosis:"250–500 µg SC/IM semanal"}],
+   contraindicaciones:["Sin contraindicaciones significativas a dosis terapéuticas","Hipersensibilidad rara pero posible"],
+   advertencias:"La solución es roja intensa — normal. En ovinos de zonas deficientes en cobalto (suelos volcánicos, Chile sur) es frecuente la carencia.",
+   tipFarmaceutico:{tipo:"inyectable",pasos:["El color rojo intenso de la solución es normal — no es contaminación","IM o SC en cualquier sitio accesible","Puede combinarse en la misma jeringa con vitamina B1 en muchas formulaciones comerciales","En ovinos con síndrome de marasmo/emaciación: complementar con suplemento de cobalto oral (sulfato de cobalto en bloque mineral)","No existe sobredosis clínicamente significativa en uso terapéutico"],
+   almacenamiento:"Refrigerado 2–8°C para máxima estabilidad. Proteger de luz — la riboflavina fotodegrada. Puede mantenerse a temperatura ambiente por períodos cortos.",fuente:"Plumb's VDH 10ª ed., Merck Vet Manual"}},
+
+  {id:29,nombre:"Dexametasona",clase:"Corticosteroide — Glucocorticoide potente",categoria:"vitaminas",
+   indicaciones:"Estado de shock, endotoxemia, reacciones alérgicas graves, cetosis bovina (junto con glucosa), inducción de parto, inflamación severa",
+   mecanismo:"Potente actividad glucocorticoide (x25 cortisol). Inhibe fosfolipasa A2 → bloquea toda la cascada inflamatoria. Inhibe movilización de glucosa.",
+   vias:["IV","IM","SC"],especies:["bovino","equino","canino","felino","ovino","porcino","caprino"],
+   dosis:[{especie:"bovino",emoji:"🐄",dosis:"Shock/endotoxemia: 1–5 mg/kg IV una vez. Cetosis: 20 mg IM × 1–2 días. Inducción parto (>270 días): 20–25 mg IM"},{especie:"equino",emoji:"🐴",dosis:"0,05–0,2 mg/kg IV/IM (inflamación severa)"},{especie:"canino",emoji:"🐕",dosis:"Shock: 2–4 mg/kg IV (dosis única). Antinflamatorio: 0,1–0,2 mg/kg IM/SC"},{especie:"felino",emoji:"🐈",dosis:"Shock: 2–4 mg/kg IV (dosis única). Antinflamatorio: 0,1–0,25 mg/kg"},{especie:"ovino",emoji:"🐑",dosis:"Inducción parto: 16–20 mg IM (días 139–144)"},{especie:"porcino",emoji:"🐖",dosis:"0,1 mg/kg IM"},{especie:"caprino",emoji:"🐐",dosis:"Inducción parto: 16–20 mg IM (día 140–145)"}],
+   contraindicaciones:["Infecciones bacterianas activas sin cobertura antibiótica","Gestación temprana a media — teratogénico","Ulceras GI activas combinado con AINEs","Inmunodepresión previa","Diabetes mellitus"],
+   advertencias:"Inducción de parto en bovinos: solo en gestaciones >270 días — antes provoca ternero viable pero débil. Retiro: carne 3–8 días, leche 3 días. Embarazadas: no manipular.",
+   tipFarmaceutico:{tipo:"inyectable",pasos:["Nunca usar en shock sin fluidos IV previos/simultáneos — solo fármaco no es suficiente","Para cetosis bovina: siempre acompañar con glucosa IV (500 mL al 50%)","Inducción parto: registrar la fecha exacta y el día de gestación — timing crítico","Si el animal está infectado: cubrir primero con antibiótico antes de dar dexametasona","Una sola dosis a dosis de shock es generalmente segura — ciclos repetidos: múltiples efectos secundarios","Embarazadas: NO manipular — absorción percutánea posible"],
+   almacenamiento:"Temperatura ambiente hasta 25°C. No congelar. Proteger de luz.",fuente:"Plumb's VDH 10ª ed., Merck Vet Manual"}},
+  // ── AVES DE CORRAL ──────────────────────
+  {id:30,nombre:"Amoxicilina (Aves)",clase:"Betalactámico — Aminopenicilina",categoria:"antimicrobianos",
+   indicaciones:"Infecciones respiratorias (CRD, Pasteurellosis), enteritis bacteriana, onfalitis en pollitos, salmonelosis en aves de traspatio",
+   mecanismo:"Inhibe síntesis de pared celular bacteriana. Bactericida tiempo-dependiente. Amplio espectro incluyendo gramnegativos.",
+   vias:["VO (agua/alimento)","IM"],especies:["ave"],
+   dosis:[{especie:"ave",emoji:"🐓",dosis:"10–15 mg/kg VO c/12 h o 1 g/L en agua de bebida × 5–7 días"}],
+   contraindicaciones:["No en ponedoras si los huevos son para consumo humano (retiro)","Hipersensibilidad a penicilinas"],
+   advertencias:"Retiro: carne 1–7 días según producto. Huevo: no autorizada en muchas regiones en ponedoras en producción. Verificar SAG/ISP.",
+   tipFarmaceutico:{tipo:"suspension_oral",pasos:["En agua: calcular consumo diario real de la parvada antes de preparar la solución","Preparar solución fresca cada 24 h — se degrada en agua","Retirar otra fuente de agua durante el tratamiento en agua medicada","En clima caliente el consumo de agua aumenta — ajustar concentración","IM: músculo pectoral (pechuga) con aguja 23–25G, máx 0,5 mL/sitio"],
+   almacenamiento:"Polvo: temperatura ambiente seca. Solución en agua: preparar diariamente, desechar sobrante.",fuente:"Plumb's VDH 10ª ed., Merck Vet Manual"}},
+
+  {id:31,nombre:"Florfenicol (Aves)",clase:"Anfenicol — Antibiótico amplio espectro",categoria:"antimicrobianos",
+   indicaciones:"Infecciones respiratorias en aves (CRD, Pasteurella multocida), enteritis necrótifica, infecciones por E. coli y Salmonella",
+   mecanismo:"Inhibe síntesis proteica bacteriana (subunidad 50S ribosomal). Bacteriostático/bactericida según concentración.",
+   vias:["VO (agua/alimento)","IM"],especies:["ave"],
+   dosis:[{especie:"ave",emoji:"🐓",dosis:"30 mg/kg VO c/24 h × 5 días o formulación en agua según producto"}],
+   contraindicaciones:["No en ponedoras en producción de huevos para consumo","No combinar con otros inhibidores de síntesis proteica"],
+   advertencias:"Retiro carne: 28 días. NO autorizado en huevo. Alternativa al cloranfenicol (este último prohibido en animales de producción).",
+   tipFarmaceutico:{tipo:"oral",pasos:["Alternativa importante cuando hay resistencia a tetraciclinas","No confundir con cloranfenicol — este está prohibido en animales de producción","Calcular bien la dosis por peso vivo total de la parvada","Retirar agua no medicada durante el tratamiento en agua"],
+   almacenamiento:"Temperatura ambiente hasta 25°C. Proteger de luz.",fuente:"Plumb's VDH 10ª ed."}},
+
+  {id:32,nombre:"Ivermectina (Aves)",clase:"Lactona macrocíclica — Ectoparasiticida",categoria:"antiparasitarios",
+   indicaciones:"Ácaros (Dermanyssus gallinae — ácaro rojo, Knemidocoptes — sarna de las patas), piojos, nematodos en aves de traspatio",
+   mecanismo:"Potencia canales Cl⁻ modulados por glutamato en nervios y músculo de invertebrados → parálisis del parásito.",
+   vias:["SC","VO (agua)","Tópico"],especies:["ave"],
+   dosis:[{especie:"ave",emoji:"🐓",dosis:"0,2 mg/kg SC dosis única (repetir c/14 días si necesario). Agua: 4 mg/L × 1–2 días (con precaución)"}],
+   contraindicaciones:["Dosis de mamíferos pueden ser tóxicas para algunas aves — verificar formulación","No en ponedoras en producción (retiro en huevo muy largo o no establecido)","Pollitos menores de 2 semanas — precaución"],
+   advertencias:"Toxicidad en aves es estrecha. Usar formulaciones específicas para aves o dosis muy conservadoras. Retiro carne aves: no bien establecido (>28 días orientativo). No autorizado en ponedoras.",
+   tipFarmaceutico:{tipo:"inyectable",pasos:["SC en pliegue de la piel del cuello o axila del ala","Aguja 25–26G, volumen máximo 0,1–0,2 mL por sitio en gallinas","Dermanyssus vive en el gallinero, no solo en el ave — tratar también el ambiente","Para ácaros de las patas (Knemidocoptes): aplicación tópica en las escamas es más práctica","Observar signos de toxicidad: ataxia, temblores, postración"],
+   almacenamiento:"Temperatura ambiente. Proteger de luz.",fuente:"Plumb's VDH 10ª ed., Merck Vet Manual"}},
+
+  {id:33,nombre:"Meloxicam (Aves)",clase:"AINE — Inhibidor COX-2 preferente",categoria:"aines",
+   indicaciones:"Dolor post-procedimiento, artritis, inflamación en aves de compañía y traspatio (gallinas, pavos, patos)",
+   mecanismo:"Inhibe preferentemente COX-2 → analgesia y antiinflamación con menor efecto sobre COX-1 (gastroprotección).",
+   vias:["VO","IM"],especies:["ave"],
+   dosis:[{especie:"ave",emoji:"🐓",dosis:"0,5–2 mg/kg VO/IM c/12–24 h (gallinas: 0,5 mg/kg; rapaces: 1–2 mg/kg)"}],
+   contraindicaciones:["Insuficiencia renal o hepática grave","No combinar con otros AINEs"],
+   advertencias:"Metabolismo en aves es variable según especie. Rapaces y loros: mejor estudiado. Gallinas de traspatio: off-label. Retiro: no bien establecido para aves de producción.",
+   tipFarmaceutico:{tipo:"oral",pasos:["En gallinas de traspatio: usar suspensión pediátrica humana (0,5 mg/mL) con jeringa pequeña","Administrar directamente en el pico con jeringa sin aguja","Con alimento (pipeta de comida) puede reducir irritación","Observar que el ave trague — pueden escupir el líquido"],
+   almacenamiento:"Temperatura ambiente hasta 25°C.",fuente:"Plumb's VDH 10ª ed."}},
+
+  // ── CAMÉLIDOS SUDAMERICANOS ──────────────
+  {id:34,nombre:"Penicilina G + Estreptomicina (Camélidos)",clase:"Betalactámico + Aminoglucósido",categoria:"antimicrobianos",
+   indicaciones:"Infecciones bacterianas en llamas y alpacas: neumonía, enteritis neonatal, infecciones de heridas, infecciones por grampositivos y gramnegativos",
+   mecanismo:"Penicilina inhibe pared celular (bactericida tiempo-dep.). Estreptomicina inhibe ribosoma 30S (bactericida concentración-dep.). Sinergia en gramnegativos.",
+   vias:["IM"],especies:["camelido"],
+   dosis:[{especie:"camelido",emoji:"🦙",dosis:"Penicilina G: 22.000 UI/kg IM c/12–24 h. Estreptomicina: 10 mg/kg IM c/24 h (combinación frecuente en campo)"}],
+   contraindicaciones:["Hipersensibilidad a betalactámicos","Insuficiencia renal (estreptomicina nefrotóxica)","No administrar IV la formulación procaína"],
+   advertencias:"La farmacología en camélidos es poco estudiada. Mayoría off-label. Retiro no bien establecido — orientativo >21 días carne. No destinar a consumo si hay duda.",
+   tipFarmaceutico:{tipo:"inyectable",pasos:["IM en músculo epaxial lumbar (zona del lomo) o glúteo — bien muscularizado","Aguja 18–20G, profundidad 2–3 cm","Máx 10 mL por sitio en adultos","Los camélidos toleran mal el estrés de manejo — contener brevemente y soltar","La llama puede escupir contenido gástrico — proteger ojos y cara del operador"],
+   almacenamiento:"Refrigerado 2–8°C (penicilina). Temperatura ambiente la estreptomicina.",fuente:"Plumb's VDH 10ª ed., Merck Vet Manual, Fowler ME Camelid Medicine"}},
+
+  {id:35,nombre:"Ivermectina (Camélidos)",clase:"Lactona macrocíclica — Avermectina",categoria:"antiparasitarios",
+   indicaciones:"Nematodos gastrointestinales (Haemonchus, Ostertagia), sarna (Sarcoptes, Psoroptes), piojos, warble fly (Psoroptes ovis)",
+   mecanismo:"Potencia canales Cl⁻ modulados por glutamato en parásitos → parálisis. No cruza BHE en dosis terapéuticas.",
+   vias:["SC","IM (off-label)"],especies:["camelido"],
+   dosis:[{especie:"camelido",emoji:"🦙",dosis:"0,2 mg/kg SC dosis única (alpacas y llamas). Algunos autores recomiendan 0,3 mg/kg para sarna"}],
+   contraindicaciones:["Crías menores de 30 días — precaución","No usar formulación pour-on bovina en camélidos — absorción impredecible"],
+   advertencias:"La ivermectina SC es generalmente bien tolerada en camélidos. Retiro carne: no establecido formalmente (orientativo >28 días). Resistencia documentada en camélidos sudamericanos silvestres.",
+   tipFarmaceutico:{tipo:"inyectable",pasos:["SC en pliegue de la piel del cuello o axila — abundante tejido subcutáneo","Usar formulación inyectable (1%), no la pour-on","Aguja 18–20G","En sarna severa: puede requerir 2–3 tratamientos c/14 días","Tratar también a todos los animales del grupo aunque no muestren síntomas"],
+   almacenamiento:"Temperatura ambiente hasta 25°C. Proteger de luz.",fuente:"Plumb's VDH 10ª ed., Fowler ME Camelid Medicine"}},
+
+  {id:36,nombre:"Meloxicam (Camélidos)",clase:"AINE — Inhibidor COX-2 preferente",categoria:"aines",
+   indicaciones:"Dolor musculoesquelético, artritis, dolor postquirúrgico, miopatía de captura, neonatos con enteritis dolorosa",
+   mecanismo:"Inhibe preferentemente COX-2 → analgesia y antiinflamación. Menor efecto ulcerogénico que AINEs no selectivos.",
+   vias:["VO","SC","IM"],especies:["camelido"],
+   dosis:[{especie:"camelido",emoji:"🦙",dosis:"0,5–1 mg/kg VO/SC/IM c/24 h (off-label, extrapolado de bovinos/ovinos)"}],
+   contraindicaciones:["Insuficiencia renal — camélidos con deshidratación","No combinar con otros AINEs","Gestación avanzada"],
+   advertencias:"Off-label en camélidos. Retiro no establecido formalmente. No usar en animales destinados a consumo sin período de resguardo largo (>30 días orientativo).",
+   tipFarmaceutico:{tipo:"inyectable",pasos:["SC bien tolerado — pliegue del cuello","La suspensión oral puede mezclarse en agua de bebida individual","Vigilar hidratación — los AINEs reducen perfusión renal con deshidratación","Miopatía de captura: administrar apenas se detecta + fluidos IV si hay acceso"],
+   almacenamiento:"Temperatura ambiente hasta 25°C.",fuente:"Plumb's VDH 10ª ed., Fowler ME Camelid Medicine"}},
+
+  {id:37,nombre:"Calcio Gluconato (Camélidos)",clase:"Electrolito — Suplemento de calcio",categoria:"vitaminas",
+   indicaciones:"Hipocalcemia puerperal en llamas y alpacas (poco frecuente pero existe), tetania, soporte en neonatos débiles",
+   mecanismo:"Restaura Ca²⁺ sérico → normaliza función neuromuscular y cardíaca.",
+   vias:["IV lento","SC (diluido)"],especies:["camelido"],
+   dosis:[{especie:"camelido",emoji:"🦙",dosis:"50–100 mL solución 23% IV MUY lento (llama adulta). Alpaca: 30–50 mL IV lento. SC: diluir al 10% máximo"}],
+   contraindicaciones:["NUNCA IV rápido — arritmias fatales","No mezclar con bicarbonato ni fosfatos","No con digoxina"],
+   advertencias:"Monitorear FC durante infusión — detener si bradicardia. Camélidos son sensibles al calcio IV rápido. Asegurar vía venosa segura (yugular).",
+   tipFarmaceutico:{tipo:"inyectable_critico",pasos:["IV jugular — única vena accesible de forma confiable en camélidos","Pasar en MÍNIMO 20–30 min","Auscultar corazón durante la infusión","SC: diluir al 10% en SF — el 23% puro causa necrosis tisular severa","Tener la jeringa de atropina preparada por si hay bradicardia severa"],
+   almacenamiento:"Temperatura ambiente. No congelar.",fuente:"Plumb's VDH 10ª ed., Fowler ME Camelid Medicine"}},
+  // ── CONDUCTA / ANSIEDAD ─────────────────
+  {id:38,nombre:"Trazodona",clase:"Antidepresivo — SARI (Inhibidor recaptación serotonina + antagonista 5-HT₂)",categoria:"conducta",
+   indicaciones:"Ansiedad situacional en perros (visitas veterinarias, viajes, tormentas, fuegos artificiales). Perros reactivos o agresivos con ansiedad anticipatoria. Puede combinarse con gabapentina.",
+   mecanismo:"Inhibe recaptación de serotonina y bloquea receptores 5-HT₂A/2C y α1-adrenérgicos → ansiolisis y sedación. En perros el efecto sedante es más pronunciado que en humanos.",
+   vias:["VO"],especies:["canino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"2,5–7 mg/kg VO, 1–2 h antes del evento estresante. Dosis crónica: 3–5 mg/kg c/12 h"}],
+   contraindicaciones:["No combinar con inhibidores de la MAO (selegilina) — síndrome serotoninérgico","Precaución con otros serotoninérgicos (tramadol, fluoxetina)","Insuficiencia hepática grave","Arritmias cardíacas preexistentes"],
+   advertencias:"No produce analgesia — si hay dolor subyacente, tratar también el dolor. Inicio de efecto: 1–2 h VO. Algunos perros pueden quedar muy sedados — ajustar dosis individualmente.",
+   tipFarmaceutico:{tipo:"oral",pasos:["Dar 1–2 h antes del evento estresante (no el día después)","Primera vez: probar en casa para evaluar respuesta y sedación antes de usarlo en consulta","Si el perro queda muy sedado: reducir dosis la próxima vez","Se puede combinar con gabapentina para mayor efecto (protocolo 'cóctel visita vet')","Comprimidos: se pueden partir. Sabor aceptable para la mayoría de los perros","No se recomienda en gatos como rutina — poca evidencia y menor margen"],
+   almacenamiento:"Temperatura ambiente seca hasta 25°C. Proteger de luz.",fuente:"Plumb's VDH 10ª ed., Merck Vet Manual"}},
+
+  {id:39,nombre:"Gabapentina",clase:"Anticonvulsivante / Analgésico neuropático — Análogo GABA",categoria:"conducta",
+   indicaciones:"Ansiedad situacional en gatos y perros (visitas veterinarias, transporte). Dolor neuropático, dolor crónico, coadyuvante en epilepsia. En gatos es especialmente efectiva como ansiolítico.",
+   mecanismo:"Se une a subunidad α2δ de canales de Ca²⁺ voltaje-dependientes → inhibe liberación de neurotransmisores excitatorios. Efecto ansiolítico, analgésico y anticonvulsivante.",
+   vias:["VO"],especies:["canino","felino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"Ansiedad: 10–20 mg/kg VO 1–2 h antes del evento. Dolor crónico: 5–10 mg/kg c/8–12 h"},{especie:"felino",emoji:"🐈",dosis:"Ansiedad: 50–100 mg/gato VO 1,5–2 h antes. Dolor: 5–10 mg/kg c/12 h"}],
+   contraindicaciones:["Insuficiencia renal — ajustar dosis (excreción renal)","No suspender bruscamente en uso crónico anticonvulsivante","Precaución con depresores del SNC — potencia sedación"],
+   advertencias:"En gatos es el ansiolítico situacional más recomendado actualmente. Ataxia transitoria es normal y esperada — avisar al propietario. Las cápsulas de 100 mg se pueden abrir y mezclar en comida.",
+   tipFarmaceutico:{tipo:"oral",pasos:["GATOS: abrir cápsula de 100 mg y mezclar la mitad o todo en comida húmeda apetecible","Dar 1,5–2 h antes — el inicio es más lento que la trazodona","Avisar al propietario que el gato puede estar 'borrachito' y con dificultad para caminar — es normal y pasajero","Combinación con trazodona en perros: muy efectiva para pacientes muy reactivos","NO usar la solución oral humana con xilitol — tóxico para perros. Solo cápsulas o comprimidos","En dolor crónico felino: excelente primera línea por seguridad y tolerabilidad"],
+   almacenamiento:"Temperatura ambiente seca. Proteger de humedad.",fuente:"Plumb's VDH 10ª ed., ISFM, WSAVA Pain Guidelines"}},
+
+  {id:40,nombre:"Acepromazina",clase:"Fenotiazina — Tranquilizante",categoria:"conducta",
+   indicaciones:"Premedicación anestésica, reducción de requerimientos anestésicos, control de náuseas en viajes, tranquilización leve para procedimientos menores",
+   mecanismo:"Bloqueo dopaminérgico (D2) + antagonismo α1-adrenérgico → sedación, antiemésis, vasodilatación periférica. NO produce analgesia ni ansiólisis real.",
+   vias:["IM","SC","IV","VO (menor efecto)"],especies:["canino","felino","equino","porcino","bovino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"0,025–0,1 mg/kg IM/SC (máx 3 mg total independiente del peso)"},{especie:"felino",emoji:"🐈",dosis:"0,025–0,05 mg/kg IM/SC"},{especie:"equino",emoji:"🐴",dosis:"0,02–0,05 mg/kg IV/IM (premedicación)"},{especie:"porcino",emoji:"🐖",dosis:"0,1–0,2 mg/kg IM"},{especie:"bovino",emoji:"🐄",dosis:"0,05–0,1 mg/kg IM (uso limitado)"}],
+   contraindicaciones:["🔴 Boxers y Bulldogs: hipersensibilidad — puede causar colapso cardiovascular severo","Shock, hipotensión o hipovolemia — produce vasodilatación severa","Epilepsia — baja el umbral convulsivo","Animales viejos con cardiopatía"],
+   advertencias:"⚠️ IMPORTANTE: la acepromazina TRANQUILIZA pero NO REDUCE LA ANSIEDAD — el animal queda quieto pero sigue aterrado. Para ansiedad real, usar trazodona o gabapentina. No revertible con ningún antídoto.",
+   tipFarmaceutico:{tipo:"inyectable",pasos:["Efecto en 15–30 min IM, 45–60 min SC","La sedación puede durar 4–8 h — no dejar al animal solo","Hipotensión: mantener al animal caliente y en decúbito","NO aumentar la dosis si el efecto parece insuficiente — esperar más tiempo","Boxers y Bulldogs: evitar o usar dosis mínimas con monitoreo","Recordar: el animal asustado bajo acepro aún puede morder si se le provoca"],
+   almacenamiento:"Temperatura ambiente hasta 25°C. Proteger de luz — se oxida.",fuente:"Plumb's VDH 10ª ed., Merck Vet Manual"}},
+
+  {id:41,nombre:"Fluoxetina",clase:"ISRS — Inhibidor Selectivo Recaptación Serotonina",categoria:"conducta",
+   indicaciones:"Trastornos de ansiedad crónica en perros y gatos: agresión por miedo, ansiedad de separación, comportamientos compulsivos (lamido excesivo, perseguir la cola), marcaje urinario felino",
+   mecanismo:"Inhibe selectivamente el transportador de recaptación de serotonina (SERT) → ↑ serotonina sináptica → modulación de conducta a largo plazo.",
+   vias:["VO"],especies:["canino","felino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"1–2 mg/kg VO c/24 h (inicio de efecto: 4–6 semanas — NO es para uso agudo)"},{especie:"felino",emoji:"🐈",dosis:"0,5–1 mg/kg VO c/24 h (o 5 mg/gato c/24 h)"}],
+   contraindicaciones:["No combinar con inhibidores de la MAO (selegilina) — síndrome serotoninérgico mortal","No combinar con trazodona, tramadol, fentanilo sin monitoreo — riesgo serotoninérgico","No suspender bruscamente — reducción gradual en semanas"],
+   advertencias:"Efecto conductual recién aparece a las 4–8 semanas. Si no hay mejoría a las 8 semanas, revisar diagnóstico o cambiar fármaco. Puede causar anorexia inicial las primeras semanas. Siempre acompañar con modificación conductual.",
+   tipFarmaceutico:{tipo:"oral",pasos:["Explicar al propietario que el efecto NO es inmediato — 4 a 8 semanas","Las primeras 1–2 semanas pueden aparecer: letargia, anorexia, agitación — generalmente pasan","NO es un sustituto del entrenamiento conductual — es un apoyo","Gatos: se puede abrir la cápsula y mezclar en comida húmeda","Si hay efecto parcial a las 6 semanas: ajustar dosis antes de cambiar fármaco","Suspender en meses con muchos factores de estrés (navidad, fiestas) puede descompensar al animal"],
+   almacenamiento:"Temperatura ambiente seca hasta 25°C.",fuente:"Plumb's VDH 10ª ed., AVSAB (American Vet Society Animal Behavior)"}},
+
+  {id:42,nombre:"Dexmedetomidina",clase:"α2-agonista — Sedante/Ansiolítico",categoria:"conducta",
+   indicaciones:"Sedación para procedimientos menores, ansiolítico potente perioperatorio, manejo de pacientes muy reactivos o agresivos. Formulación intranasal/oral transmucosa para ansiedad situacional.",
+   mecanismo:"Agonismo α2-adrenérgico altamente selectivo → sedación, analgesia y ansiolisis. Más selectivo y predecible que xilazina.",
+   vias:["IV","IM","Intranasal (OTM — oral transmucosa)"],especies:["canino","felino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"Sedación IV: 1–5 µg/kg IV. IM: 5–20 µg/kg. OTM ansiolítico: 20–40 µg/kg en mucosa bucal 30–40 min antes"},{especie:"felino",emoji:"🐈",dosis:"Sedación IV: 5–10 µg/kg. IM: 10–40 µg/kg. OTM: 40 µg/kg en mucosa bucal"}],
+   contraindicaciones:["Cardiopatías — produce bradicardia y bloqueo AV","Hipotensión o shock","Gestación","No combinar con acepromazina — hipotensión severa"],
+   advertencias:"Antídoto disponible: Atipamezol (reversor α2) — tener siempre disponible. El OTM (oral transmucosa) es una alternativa excelente para gatos muy estresados antes de entrar a la clínica — el propietario puede aplicarlo en casa.",
+   tipFarmaceutico:{tipo:"inyectable",pasos:["OTM en gatos: aplicar con jeringa sin aguja entre la mejilla y los dientes — NO tragar, absorción por mucosa","OTM: efecto en 20–40 min — dar en casa antes del viaje al veterinario","IV: muy lento — la bradicardia inicial es normal pero monitorear","Tener atipamezol SIEMPRE antes de usar dexmedetomidina","IM: el animal puede verse muy sedado pero sigue consciente de estímulos dolorosos — siempre analgesia adicional","En el 'cóctel visita vet' para gatos: dexmedetomidina OTM + gabapentina VO = protocolo muy efectivo"],
+   almacenamiento:"Refrigerado 2–8°C. Proteger de luz. Una vez abierto: verificar ficha técnica del producto.",fuente:"Plumb's VDH 10ª ed., ISFM Cat-Friendly Practice Guidelines"}},
+
+  // ── ANTIEMÉTICOS ────────────────────────
+  {id:43,nombre:"Maropitant (Cerenia)",clase:"Antiemético — Antagonista NK1 (neurocinina 1)",categoria:"antiemeticos",
+   indicaciones:"Vómito agudo en perros y gatos — parvovirus, panleucopenia, gastroenteritis, viajes, quimioterapia. Primera línea antiemética veterinaria. También reduce dolor visceral abdominal.",
+   mecanismo:"Bloquea receptores NK1 de sustancia P en el centro del vómito y en el tracto gastrointestinal. Actúa tanto en el sistema nervioso central como periférico → efecto antiemético y antinociceptivo visceral.",
+   vias:["SC","IV","VO"],especies:["canino","felino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"1 mg/kg SC/IV c/24 h (mínimo 2 mg/kg VO c/24 h con alimento). Máx 5 días consecutivos."},{especie:"felino",emoji:"🐈",dosis:"1 mg/kg SC c/24 h (uso off-label; bien tolerado)"}],
+   contraindicaciones:["No administrar SC en sitios con hipersensibilidad local — puede doler","Precaución con insuficiencia hepática grave (metabolismo hepático)","No usar en animales con obstrucción intestinal — el vómito puede ser protector"],
+   advertencias:"SC puede causar dolor local al inyectar — se puede refrigerar brevemente antes para reducir molestia. Es el antiemético de elección en parvovirus. No es antidiarreico.",
+   tipFarmaceutico:{tipo:"inyectable",pasos:["SC: zona interescapular o lateral del cuello — aguja 22–23G","Puede doler al inyectar — comprimir suavemente el sitio post-inyección","IV: administrar lento en 1–2 min, diluido en SF","VO: dar con pequeña cantidad de comida para evitar vómito del propio comprimido","En parvovirus: combinar con fluidos IV + antibióticos (no es suficiente solo)","Efecto visible en 1–2 h SC, más rápido IV"],
+   almacenamiento:"Refrigerado 2–8°C. Proteger de luz. Una vez abierto verificar ficha técnica.",fuente:"Plumb's VDH 10ª ed., Merck Vet Manual"}},
+
+  {id:44,nombre:"Ondansetrón",clase:"Antiemético — Antagonista 5-HT3 (serotonina)",categoria:"antiemeticos",
+   indicaciones:"Vómito severo resistente a maropitant, vómito por quimioterapia, vómito central (lesiones cerebrales), parvovirus grave, vómito posoperatorio",
+   mecanismo:"Bloquea receptores de serotonina (5-HT3) en el tracto gastrointestinal y en la zona gatillo quimiorreceptora del SNC. Efecto complementario al maropitant (distintos mecanismos).",
+   vias:["IV","IM","VO"],especies:["canino","felino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"0,1–0,2 mg/kg IV/IM c/8–12 h. VO: 0,5–1 mg/kg c/12–24 h"},{especie:"felino",emoji:"🐈",dosis:"0,1–0,2 mg/kg IV/IM c/8–12 h"}],
+   contraindicaciones:["Prolongación del intervalo QT — precaución con cardiopatías","No combinar con otros fármacos que prolonguen QT (algunos antibióticos)"],
+   advertencias:"Puede combinarse con maropitant para vómito refractario — mecanismos distintos dan efecto sinérgico. Formulación humana utilizable en veterinaria. Comprimidos bucodispersables facilitan administración.",
+   tipFarmaceutico:{tipo:"inyectable",pasos:["IV: administrar lento en 2–3 min. Rápido puede causar hipotensión transitoria","Comprimidos bucodispersables humanos (Zofran ODT): se disuelven en la boca — útil en animales que no tragan bien","En parvovirus grave: maropitant SC + ondansetrón IV = protocolo antiemético de doble bloqueo","Guardar registro de la dosis y hora — importante para no sobredosificar"],
+   almacenamiento:"Temperatura ambiente hasta 25°C. Proteger de luz.",fuente:"Plumb's VDH 10ª ed."}},
+
+  {id:45,nombre:"Metoclopramida",clase:"Antiemético/Procinético — Antagonista D2 + 5-HT3",categoria:"antiemeticos",
+   indicaciones:"Vómito por estasis gástrica, reflujo gastroesofágico, gastroparesia, vómito posoperatorio. Útil cuando hay componente de motilidad alterada.",
+   mecanismo:"Bloquea receptores dopaminérgicos D2 (zona gatillo quimiorreceptora) y receptores 5-HT3 → efecto antiemético. Además estimula la motilidad GI superior (procinético).",
+   vias:["VO","SC","IM","IV (infusión continua)"],especies:["canino","felino","bovino","equino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"0,2–0,5 mg/kg VO/SC/IM c/8 h. Infusión IV: 1–2 mg/kg/día"},{especie:"felino",emoji:"🐈",dosis:"0,2–0,5 mg/kg VO/SC c/8–12 h"},{especie:"bovino",emoji:"🐄",dosis:"0,1 mg/kg IV/IM c/8–12 h (íleo post-quirúrgico)"},{especie:"equino",emoji:"🐴",dosis:"0,02–0,1 mg/kg IV lento (íleo postoperatorio)"}],
+   contraindicaciones:["Obstrucción intestinal mecánica — el procinético puede empeorar","Epilepsia — baja el umbral convulsivo","No combinar con atropina (efectos opuestos sobre motilidad)","Feocromocitoma"],
+   advertencias:"Puede causar signos extrapiramidales (temblores, rigidez) especialmente en gatos a dosis altas — reducir dosis. Menos potente que maropitant como antiemético puro, pero añade el efecto procinético.",
+   tipFarmaceutico:{tipo:"oral_inyectable",pasos:["Dar 30 min ANTES de la comida para efecto procinético óptimo","Si aparecen temblores o rigidez muscular: suspender y consultar — efecto extrapiramidal","IV: infusión continua es más efectiva que bolos. Diluir en SF","En parvovirus: el maropitant es preferible como primera línea","Comprimidos se pueden fraccionar para dosis pequeñas en gatos"],
+   almacenamiento:"Temperatura ambiente hasta 25°C. Proteger de luz — la solución IV puede oscurecerse pero sigue siendo efectiva.",fuente:"Plumb's VDH 10ª ed., Merck Vet Manual"}},
+
+  {id:46,nombre:"Mirtazapina",clase:"Estimulante del apetito — Antidepresivo NaSSA",categoria:"antiemeticos",
+   indicaciones:"Anorexia en gatos (enfermedades crónicas, post-enfermedad viral, insuficiencia renal, hepatopatías). Antiemético secundario. Estimulante del apetito en perros como segunda línea.",
+   mecanismo:"Antagonismo de receptores α2-adrenérgicos y 5-HT2/5-HT3 → estimulación del apetito y efecto antiemético. En gatos: vida media larga y muy sensibles al efecto orexigénico.",
+   vias:["VO","Transdérmico (parche felino)"],especies:["canino","felino"],
+   dosis:[{especie:"canino",emoji:"🐕",dosis:"1,88–3,75 mg/perro VO c/24 h (hasta 7,5 mg en razas grandes)"},{especie:"felino",emoji:"🐈",dosis:"1,88 mg/gato VO c/48–72 h (¡NO c/24 h — acumulación!). Parche transdérmico: 2 mg/72 h en pabellón auricular"}],
+   contraindicaciones:["No combinar con inhibidores MAO — síndrome serotoninérgico","Insuficiencia hepática grave (ajustar dosis)","Gatos hipertiroideos — puede exacerbar"],
+   advertencias:"En gatos la dosis es cada 48–72 h, NO diaria — se acumula y causa toxicidad (vocalización, ataxia, agitación). El parche auricular es muy práctico para gatos que rechazan medicación oral.",
+   tipFarmaceutico:{tipo:"oral",pasos:["GATOS: dosis cada 48–72 h, marcar en calendario — error frecuente dar a diario","Parche auricular: aplicar en cara interna del pabellón auricular (sin pelo), rotar lado cada dosis","Comprimido de 7,5 mg humano: fraccionar en cuartos para la dosis felina de 1,88 mg","Si el gato vocaliza, está agitado o atáxico tras la dosis: suspender — efecto adverso por acumulación","En anorexia felina >48 h: urgencia — riesgo lipidosis hepática"],
+   almacenamiento:"Temperatura ambiente seca hasta 25°C.",fuente:"Plumb's VDH 10ª ed., ISFM"}}
+];
+
+// ═══════════════════════════════════════════════════
+//  ESTADO
+// ═══════════════════════════════════════════════════
+let activeEspecie="todos", activeCat="todos", searchTerm="";
+
+const CAT_META={
+  antimicrobianos:{emoji:"💊",label:"Antimicrobiano"},
+  antiparasitarios:{emoji:"🦠",label:"Antiparasitario"},
+  aines:{emoji:"🔥",label:"AINE / Analgésico"},
+  anestesia:{emoji:"💉",label:"Anestesia/Sedación"},
+  reproductivos:{emoji:"🐣",label:"Reproductivo"},
+  gastrointestinal:{emoji:"🫀",label:"Gastrointestinal"},
+  cardiovascular:{emoji:"❤️",label:"Cardiovascular"},
+  neurologico:{emoji:"🧠",label:"Neurológico"},
+  conducta:{emoji:"🧡",label:"Conducta/Ansiedad"},
+  "antiemeticos":{emoji:"🤢",label:"Antieméticos"},
+  vitaminas:{emoji:"⭐",label:"Vitaminas/Supl."}
+};
+const ESP_META={canino:{emoji:"🐕",label:"Canino"},felino:{emoji:"🐈",label:"Felino"},bovino:{emoji:"🐄",label:"Bovino"},equino:{emoji:"🐴",label:"Equino"},ovino:{emoji:"🐑",label:"Ovino"},porcino:{emoji:"🐖",label:"Porcino"},caprino:{emoji:"🐐",label:"Caprino"},ave:{emoji:"🐓",label:"Aves"},camelido:{emoji:"🦙",label:"Camélidos"}};
+
+// ═══════════════════════════════════════════════════
+//  PANEL SWITCH
+// ═══════════════════════════════════════════════════
+// ── SIDEBAR ──────────────────────────────────
+function toggleDrawer(){
+  const s=document.getElementById("sidebar");
+  const o=document.getElementById("sidebarOverlay");
+  const h=document.getElementById("hamBtn");
+  const isOpen=s.classList.contains("open");
+  s.classList.toggle("open",!isOpen);
+  o.classList.toggle("open",!isOpen);
+  h.classList.toggle("open",!isOpen);
+}
+function closeSidebar(){
+  document.getElementById("sidebar").classList.remove("open");
+  document.getElementById("sidebarOverlay").classList.remove("open");
+  document.getElementById("hamBtn").classList.remove("open");
+}
+function closeDrawer(){ closeSidebar(); }
+
+const PANEL_META={
+  farmacos:{icon:"💊",label:"Fármacos"},
+  antiemeticos:{icon:"🤢",label:"Antieméticos"},
+  tips:{icon:"💡",label:"Tips Farmacéuticos"},
+  especies:{icon:"🐾",label:"Especies"},
+  viral:{icon:"🦠",label:"Enfermedades Virales"}
+};
+
+function filterCat(cat, btn){
+  activeCat=cat;
+  document.querySelectorAll(".cat-btn").forEach(b=>b.classList.toggle("active", b.dataset.cat===cat));
+  renderCards();
+}
+
+function switchPanel(name, btn){
+  // Sidebar active state
+  document.querySelectorAll(".sidebar-item").forEach(b=>b.classList.remove("active"));
+  if(btn) btn.classList.add("active");
+
+  // Hide all panels
+  ["panel-farmacos","panel-tips","panel-especies","panel-viral"]
+    .forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display="none"; });
+
+  if(name==="antiemeticos"){
+    document.getElementById("panel-farmacos").style.display="block";
+    activeCat="antiemeticos";
+    activeEspecie="todos";
+    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+    document.querySelectorAll(".tab")[0].classList.add("active");
+    document.querySelectorAll(".cat-btn").forEach(b=>b.classList.toggle("active", b.dataset.cat==="antiemeticos"));
+    renderCards();
+  } else if(name==="farmacos"){
+    document.getElementById("panel-farmacos").style.display="block";
+    activeCat="todos";
+    document.querySelectorAll(".cat-btn").forEach(b=>b.classList.toggle("active", b.dataset.cat==="todos"));
+    renderCards();
+  } else if(name==="tips"){
+    document.getElementById("panel-tips").style.display="block";
+  } else if(name==="especies"){
+    document.getElementById("panel-especies").style.display="block";
+  } else if(name==="viral"){
+    document.getElementById("panel-viral").style.display="block";
+  }
+
+  closeSidebar();
+}
+
+// ═══════════════════════════════════════════════════
+//  RENDER CARDS
+// ═══════════════════════════════════════════════════
+function getFiltered(){
+  return FARMACOS.filter(f=>{
+    const mE=activeEspecie==="todos"||f.especies.includes(activeEspecie);
+    const mC=activeCat==="todos"||f.categoria===activeCat;
+    const t=searchTerm.toLowerCase();
+    const mS=!t||f.nombre.toLowerCase().includes(t)||f.clase.toLowerCase().includes(t)||f.indicaciones.toLowerCase().includes(t);
+    return mE&&mC&&mS;
+  });
+}
+
+function renderCards(){
+  const grid=document.getElementById("cardsGrid");
+  const filtered=getFiltered();
+  document.getElementById("resultsCount").textContent=filtered.length===0?"":
+    `${filtered.length} fármaco${filtered.length!==1?"s":""} encontrado${filtered.length!==1?"s":""}`;
+  if(filtered.length===0){
+    grid.innerHTML=`<div class="empty-state"><div class="es-emoji">🔍</div><h3>Sin resultados</h3><p>Prueba otro término o filtro.</p></div>`;
+    return;
+  }
+  grid.innerHTML=filtered.map(f=>{
+    const cm=CAT_META[f.categoria]||{emoji:"💊",label:f.categoria};
+    const dosisToShow=activeEspecie!=="todos"?f.dosis.filter(d=>d.especie===activeEspecie):f.dosis.slice(0,3);
+    const rows=dosisToShow.length>0
+      ? dosisToShow.map(d=>`<div class="dosis-row"><div class="dosis-especie"><span class="esp-emoji">${d.emoji}</span>${ESP_META[d.especie]?.label||d.especie}</div><div class="dosis-valor">${d.dosis}</div></div>`).join("")
+      : `<div style="font-size:.82rem;color:var(--gris);padding:6px 0">Ver ficha completa para dosis de esta especie</div>`;
+    const warn=f.advertencias.length>110?f.advertencias.substring(0,107)+"...":f.advertencias;
+    const vias=f.vias.map(v=>`<span class="via-pill">${v}</span>`).join("");
+    return `<div class="drug-card" data-id="${f.id}">
+      <div class="card-header"><div><div class="drug-name">${f.nombre}</div><div class="drug-class">${f.clase}</div></div><span class="cat-badge badge-${f.categoria}">${cm.emoji} ${cm.label}</span></div>
+      <div class="card-indicacion"><span class="ic">🎯</span><span>${f.indicaciones.substring(0,100)}${f.indicaciones.length>100?"...":""}</span></div>
+      <div class="dosis-section"><div class="dosis-title"><span>💊</span>Dosis por especie${activeEspecie==="todos"?" (hasta 3)":""}</div><div class="dosis-rows">${rows}</div></div>
+      <div class="card-via"><span style="font-weight:600;color:#455A64">Vía:</span>${vias}</div>
+      <div class="card-warnings"><span class="warn-icon">⚠️</span><span class="warn-text">${warn}</span></div>
+    </div>`;
+  }).join("");
+}
+
+// ═══════════════════════════════════════════════════
+//  MODAL
+// ═══════════════════════════════════════════════════
+function openModal(id){
+  const f=FARMACOS.find(x=>x.id===id);if(!f)return;
+  document.getElementById("mDrugName").textContent=f.nombre;
+  document.getElementById("mDrugClass").textContent=f.clase;
+  const badge=document.getElementById("mCatBadge");
+  const cm=CAT_META[f.categoria]||{emoji:"💊",label:f.categoria};
+  badge.textContent=`${cm.emoji} ${cm.label}`;
+  badge.className=`cat-badge badge-${f.categoria}`;
+
+  const dosisRows=f.dosis.map(d=>`<tr><td class="esp-cell">${d.emoji} ${ESP_META[d.especie]?.label||d.especie}</td><td>${d.dosis}</td></tr>`).join("");
+  const contrainds=f.contraindicaciones.map(c=>`<li>${c}</li>`).join("");
+
+  // Tips farmacéuticos
+  let tipHtml="";
+  if(f.tipFarmaceutico){
+    const t=f.tipFarmaceutico;
+    const tipoLabel={suspension_oral:"💊 Suspensión Oral",inyectable:"💉 Inyectable",topico:"🖐️ Tópico",oral:"🍃 Oral",oral_inyectable:"💊💉 Oral / Inyectable",inyectable_especial:"💉⚠️ Inyectable Especial",inyectable_frio:"❄️💉 Cadena de Frío",inyectable_riesgo:"⚠️💉 Riesgo Operador",inyectable_critico:"🚨💉 Crítico — Monitorear",dispositivo_inyectable:"🔧💉 Dispositivo/Inyectable",oral_iv:"💊💉 Oral / IV",oral_controlado:"🔒💊 Controlado Oral",inyectable_controlado:"🔒💉 Controlado Inyectable"}[t.tipo]||"💊 Farmacéutico";
+    const pasos=t.pasos.map(p=>`<li>${p}</li>`).join("");
+    tipHtml=`
+      <div class="modal-section">
+        <div class="modal-section-title">💡 Tips Farmacéuticos — ${tipoLabel}</div>
+        <div class="modal-tip-box">
+          <div class="tip-title">🧪 Preparación y Administración</div>
+          <ul>${pasos}</ul>
+          <div style="margin-top:10px;padding-top:8px;border-top:1px solid #B2DFDB">
+            <strong>🌡️ Almacenamiento:</strong> ${t.almacenamiento}
+          </div>
+        </div>
+      </div>`;
+  }
+
+  document.getElementById("mModalBody").innerHTML=`
+    <div class="modal-section"><div class="modal-section-title">🎯 Indicaciones</div><p style="font-size:.88rem;line-height:1.55;color:#37474F">${f.indicaciones}</p></div>
+    <div class="modal-section"><div class="modal-section-title">⚗️ Mecanismo de acción</div><div class="mecanismo-box">${f.mecanismo}</div></div>
+    <div class="modal-section"><div class="modal-section-title">💊 Dosis por especie</div>
+      <table class="modal-dosis-table"><thead><tr><th>Especie</th><th>Dosis / Frecuencia</th></tr></thead><tbody>${dosisRows}</tbody></table>
+    </div>
+    <div class="modal-section"><div class="modal-section-title">🚫 Contraindicaciones</div><ul class="contraindicaciones-list">${contrainds}</ul></div>
+    ${tipHtml}
+    <div class="modal-section"><div class="modal-section-title">⚠️ Advertencias y retiro</div><div class="alerta-box"><span>⚠️</span><span>${f.advertencias}</span></div></div>
+    <div class="modal-section"><div class="modal-section-title">💉 Vías de administración</div><div class="pill-row">${f.vias.map(v=>`<span class="pill-via">${v}</span>`).join("")}</div></div>
+    <div><div class="fuente-badge">📚 Fuente: ${f.tipFarmaceutico?.fuente||"Plumb's VDH 10ª ed."}</div></div>`;
+
+  document.getElementById("modalOverlay").classList.add("open");
+  document.body.style.overflow="hidden";
+}
+
+function closeModal(){
+  document.getElementById("modalOverlay").classList.remove("open");
+  document.body.style.overflow="";
+}
+document.getElementById("modalOverlay").addEventListener("click",e=>{if(e.target===e.currentTarget)closeModal();});
+
+// ═══════════════════════════════════════════════════
+//  EVENTOS
+// ═══════════════════════════════════════════════════
+
+// Delegated click en el grid — evita problemas con onclick inline
+document.getElementById("cardsGrid").addEventListener("click",function(e){
+  const card=e.target.closest(".drug-card");
+  if(card){
+    try{ openModal(parseInt(card.dataset.id)); }
+    catch(err){ console.error("Error abriendo modal:",err); }
+  }
+});
+
+document.querySelectorAll(".tab").forEach(tab=>{
+  tab.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+    tab.classList.add("active");
+    activeEspecie=tab.dataset.especie;
+    renderCards();
+  });
+});
+document.querySelectorAll(".cat-btn").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".cat-btn").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    activeCat=btn.dataset.cat;
+    renderCards();
+  });
+});
+document.getElementById("searchInput").addEventListener("input",function(){
+  searchTerm=this.value.trim();
+  renderCards();
+});
+
+// init
+renderCards();
+</script>
+</body>
+</html>
